@@ -8,7 +8,7 @@
 /*****                                                  *****/
 /************************************************************/
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDistribution_Game]') AND type)
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDistribution_Game]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 GO
 
@@ -38,7 +38,175 @@ ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAI
 
 GO
 
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_AddGame') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddGame
+GO
 
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddGame
+
+@GameName nvarchar (max)
+, @GameDescription nvarchar (max)
+, @DeveloperId int
+, @ModuleId int
+, @PublishedDate datetime
+, @VerifiedBy int
+, @AgeRating int
+, @DownloadUrl nvarchar (max)
+
+AS
+INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
+			([GameName]
+			,[GameDescription]
+			,[DeveloperId]
+			,[ModuleId]
+			,[PublishedDate]
+			,[ContentItemId]
+			,[VerifiedBy]
+			,[LastUpdatedOnDate]
+			,[LastModifiedByUserId]
+			,[AgeRating]
+			,[DownloadUrl])
+	VALUES
+		(@GameName
+			, @GameDescription
+			, @DeveloperId
+			, @ModuleId
+			, @PublishedDate
+			, -1 --TODO: Update ContentItemId Handling
+			, @VerifiedBy
+			, GETDATE()
+			, @VerifiedBy
+			, @AgeRating
+			, @DownloadUrl
+		)
+--return the ID of the Game back so we can create a contentItemId
+--Select @@Identitiy
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame
+
+@GameId int
+, @GameName nvarchar (max)
+, @GameDescription nvarchar (max)
+, @DeveloperId int
+, @ModuleId int
+, @PublishedDate datetime
+, @ContentItemId int
+, @LastModifiedByUserId int
+, @AgeRating int
+, @DownloadUrl nvarchar (max)
+
+AS
+UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
+			Set
+			GameName = @GameName
+			, GameDescription = @GameDescription
+			, DeveloperId = @DeveloperId
+			, ModuleId = @ModuleId
+			, PublishedDate = @PublishedDate
+			, ContentItemId = @ContentItemId
+			, LastUpdatedOnDate = GETDATE()
+			, LastModifiedByUserId = @LastModifiedByUserId
+			, AgeRating = @AgeRating
+			, DownloadUrl = @DownloadUrl
+WHERE
+			GameId = @GameId
+GO
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_DeleteGames') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_DeleteGames
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_DeleteGames
+	@ModuleId int
+AS
+DELETE FROM
+	{databaseOwner}{objectQualifier}SGGameDistribution_Game
+WHERE ModuleId = @ModuleId
+GO
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_DeleteGame') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_DeleteGame
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_DeleteGame
+	@GameId int
+AS
+DELETE FROM
+	{databaseOwner}{objectQualifier}SGGameDistribution_Game
+WHERE GameId = @GameId
+GO
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_GetGame') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_GetGame
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_GetGame
+	@GameId int
+AS
+SELECT
+	g.GameId
+	, g.ModuleId
+	, g.GameName
+	, g.GameDescription
+	, g.DeveloperId
+	, g.PublishedDate
+	, g.VerifiedBy
+	, g.LastUpdatedOnDate
+	, g.LastModifiedByUserId
+	, g.AgeRating
+	, g.DownloadUrl
+	, CI.ContentItemID
+	, CI.Content
+	, CI.ContentTypeID
+	, CI.TabID
+	, CI.ContentKey
+	, CI.Indexed
+FROM
+	{databaseOwner}{objectQualifier}SGGameDistribution_Game g
+	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON g.ContentItemId = CI.ContentItemID
+WHERE
+	g.GameId = @GameId
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_GetGames') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_GetGames
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_GetGames
+	@ModuleId int
+AS
+SELECT
+	g.GameId
+	, g.ModuleId
+	, g.GameName
+	, g.GameDescription
+	, g.DeveloperId
+	, g.PublishedDate
+	, g.VerifiedBy
+	, g.LastUpdatedOnDate
+	, g.LastModifiedByUserId
+	, g.AgeRating
+	, g.DownloadUrl
+	, CI.ContentItemID
+	, CI.Content
+	, CI.ContentTypeID
+	, CI.TabID
+	, CI.ContentKey
+	, CI.Indexed
+FROM
+	{databaseOwner}{objectQualifier}SGGameDistribution_Game g
+	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON g.ContentItemId = CI.ContentItemID
+WHERE
+	g.ModuleId = @ModuleId
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
