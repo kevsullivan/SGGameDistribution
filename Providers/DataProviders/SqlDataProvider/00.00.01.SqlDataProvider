@@ -8,6 +8,35 @@
 /*****                                                  *****/
 /************************************************************/
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDistribution_Game]') AND type)
+DROP TABLE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game
+	(
+	GameId int NOT NULL,
+	GameName nvarchar(MAX) NOT NULL,
+	GameDescription nvarchar(MAX) NOT NULL,
+	DeveloperId int NOT NULL,
+	ModuleId int NOT NULL,
+	PublishedDate datetime NOT NULL,
+	ContentItemId int NULL,
+	VerifiedBy int NOT NULL,
+	LastUpdatedOnDate datetime NOT NULL,
+	LastModifiedByUserId int NOT NULL,
+	AgeRating int NOT NULL,
+	DownloadUrl nvarchar(MAX) NOT NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAINT
+	PK_{objectQualifier}SGGameDistribution_Game PRIMARY KEY CLUSTERED 
+	(
+	GameId
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
 
 
 /************************************************************/
