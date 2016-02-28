@@ -59,7 +59,6 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <returns>ID of Saved Game</returns>
         public static int SaveGame(Game g, int tabId)
         {
-            //TODO: This is infinite looping for some reason. Fix Recursion to function correctly
             if (g.GameId < 1)
             {
                 g.GameId = DataProvider.Instance().AddGame(g);
