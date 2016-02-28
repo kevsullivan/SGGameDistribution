@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\Game.cs" />
+    <Compile Include="Components\GameController.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="SGGameDistributionModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
