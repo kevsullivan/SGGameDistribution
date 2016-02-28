@@ -12,6 +12,7 @@
 
 using System.Data;
 using System;
+using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
 
@@ -80,6 +81,17 @@ namespace Christoc.Modules.SGGameDistribution.Data
 
         //public abstract IDataReader GetItem(int itemId);        
 
+        public abstract IDataReader GetGames(int moduleId);
+
+        public abstract IDataReader GetGame(int gameId);
+
+        public abstract void DeleteGame(int gameId);
+
+        public abstract void DeleteGames(int moduleId);
+
+        public abstract int AddGame(Game g);
+
+        public abstract void UpdateGame(Game g);
 
         #endregion
 

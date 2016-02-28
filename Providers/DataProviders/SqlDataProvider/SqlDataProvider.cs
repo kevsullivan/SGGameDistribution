@@ -11,8 +11,12 @@
 */
 
 using System;
+using System.Data;
+using System.Data.SqlClient;
+using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace Christoc.Modules.SGGameDistribution.Data
 {
@@ -20,7 +24,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SQL Server implementation of the abstract DataProvider class
-    /// 
+    /// Pulls Database Information from Website install web.config file for database access.
     /// This concreted data provider class provides the implementation of the abstract methods 
     /// from data dataprovider.cs
     /// 
@@ -143,7 +147,80 @@ namespace Christoc.Modules.SGGameDistribution.Data
         //    return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "spGetItemsForUser", userId, portalId);
         //}
 
+        public override IDataReader GetGames(int moduleId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix+ "GetGames", new SqlParameter("@ModuleId", moduleId));
+        }
 
+        public override IDataReader GetGame(int gameId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetGame", new SqlParameter("@GameId", gameId));
+        }
+
+        public override void DeleteGame(int gameId)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "DeleteGame", new SqlParameter("@GameId", gameId));
+        }
+
+        public override void DeleteGames(int moduleId)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "DeleteGames", new SqlParameter("@ModuleId", moduleId));
+        }
+
+        /// <summary>
+        /// From SqlDataProvider Stored Procedure Parameters are:
+        /// @GameName nvarchar
+        /// , @GameDescription nvarchar
+        /// , @DeveloperId
+        /// , @ModuleId
+        /// , @PublishedDate
+        /// , @VerifiedBy
+        /// , @AgeRating
+        /// , @DownloadUrl nvarchar
+        /// </summary>
+        /// <param name="g"></param>
+        /// <returns>An Integer = the ID of game that gets created.</returns>
+        public override int AddGame(Game g)
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "AddGame"
+                , new SqlParameter("@GameName", g.GameName)
+                , new SqlParameter("@GameDescription", g.GameDescription)
+                , new SqlParameter("@DeveloperId", g.DeveloperId)
+                , new SqlParameter("@ModuleId", g.ModuleId)
+                , new SqlParameter("@PublishedDate", g.PublishedDate)
+                , new SqlParameter("@VerifiedBy", g.VerifiedById)
+                , new SqlParameter("@AgeRating", g.AgeRating)
+                , new SqlParameter("@DownloadUrl", g.DownloadUrl)
+                ));
+        }
+        
+        /// <summary>
+        /// From SqlDataProvider Stored Procedure Parameters are:
+        /// @GameId
+        /// , @GameName nvarchar
+        /// , @GameDescription
+        /// , @DeveloperId
+        /// , @ModuleId
+        /// , @ContentItemId
+        /// , @LastModifiedByUserId
+        /// , @AgeRating
+        /// , @DownloadUrl
+        /// </summary>
+        /// <param name="g"></param>
+        public override void UpdateGame(Game g)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "UpdateGame"
+                , new SqlParameter("@GameId", g.GameId)
+                , new SqlParameter("@GameName", g.GameName)
+                , new SqlParameter("@GameDescription", g.GameDescription)
+                , new SqlParameter("@DeveloperId", g.DeveloperId)
+                , new SqlParameter("@ModuleId", g.ModuleId)
+                , new SqlParameter("@ContentItemId", g.ContentItemId)
+                , new SqlParameter("@LastModifiedBy", g.LastModifiedByUserId)
+                , new SqlParameter("@AgeRating", g.AgeRating)
+                , new SqlParameter("@DownloadUrl", g.DownloadUrl)
+                );
+        }
         #endregion
 
     }

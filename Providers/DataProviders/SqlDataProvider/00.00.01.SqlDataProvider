@@ -94,7 +94,6 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame
 , @GameDescription nvarchar (max)
 , @DeveloperId int
 , @ModuleId int
-, @PublishedDate datetime
 , @ContentItemId int
 , @LastModifiedByUserId int
 , @AgeRating int
@@ -107,7 +106,6 @@ UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, GameDescription = @GameDescription
 			, DeveloperId = @DeveloperId
 			, ModuleId = @ModuleId
-			, PublishedDate = @PublishedDate
 			, ContentItemId = @ContentItemId
 			, LastUpdatedOnDate = GETDATE()
 			, LastModifiedByUserId = @LastModifiedByUserId
