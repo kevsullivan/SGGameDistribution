@@ -81,11 +81,21 @@ namespace Christoc.Modules.SGGameDistribution
                 DeveloperId = Convert.ToInt32(ddlDeveloper.SelectedValue),
                 PublishedDate = DateTime.Now,
                 VerifiedById = UserId,
+                //TODO: Sort out difference between Verified By and Last Modified By.
+                LastModifiedByUserId = UserId,
                 GameName = txtName.Text.Trim(),
                 GameDescription = txtDescription.Text.Trim(),
                 AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue),
                 DownloadUrl = txtDownloadUrl.Text.Trim()
             };
+
+            /*Check Dates
+            DateTime outputDate;
+            if (DateTime.TryParse(txtPublishedDate.Text.Trim(), out outputDate))
+            {
+                g.PublishedDate = outputDate;
+            }*/
+
             GameController.SaveGame(g, TabId);
             //TODO: Pass parameters into NavigateUrl to Show message that Game was Saved.
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());

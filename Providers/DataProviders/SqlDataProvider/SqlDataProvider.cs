@@ -182,7 +182,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// <returns>An Integer = the ID of game that gets created.</returns>
         public override int AddGame(Game g)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "AddGame"
+            var gId = Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "AddGame"
                 , new SqlParameter("@GameName", g.GameName)
                 , new SqlParameter("@GameDescription", g.GameDescription)
                 , new SqlParameter("@DeveloperId", g.DeveloperId)
@@ -192,6 +192,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@AgeRating", g.AgeRating)
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
                 ));
+            return gId;
         }
         
         /// <summary>
@@ -216,7 +217,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@DeveloperId", g.DeveloperId)
                 , new SqlParameter("@ModuleId", g.ModuleId)
                 , new SqlParameter("@ContentItemId", g.ContentItemId)
-                , new SqlParameter("@LastModifiedBy", g.LastModifiedByUserId)
+                , new SqlParameter("@LastModifiedByUserId", g.LastModifiedByUserId)
                 , new SqlParameter("@AgeRating", g.AgeRating)
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
                 );

@@ -14,7 +14,7 @@ GO
 
 CREATE TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game
 	(
-	GameId int NOT NULL,
+	GameId int NOT NULL IDENTITY (1, 1),
 	GameName nvarchar(MAX) NOT NULL,
 	GameDescription nvarchar(MAX) NOT NULL,
 	DeveloperId int NOT NULL,
@@ -80,7 +80,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, @DownloadUrl
 		)
 --return the ID of the Game back so we can create a contentItemId
---Select @@Identitiy
+Select @@Identity
 GO
 
 IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame') and OBJECTPROPERTY(id, N'IsProcedure')=1)

@@ -28,6 +28,7 @@ namespace Christoc.Modules.SGGameDistribution.Components.Taxonomy
 
             // If our content type not found i.e. first time usage of SGGameDistribution - Create ContentType
             // Otherwsie just grab Id from any found contentTypes.
+            //TODO: See if using .Any() is possible without Stackoverflow error.
             if (colContentTypes.Any())
             {
                 var contentType = colContentTypes.Single();

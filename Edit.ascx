@@ -13,10 +13,6 @@
 <asp:DropDownList ID="ddlDeveloper" runat="server"></asp:DropDownList>
 <br/>
 
-<dnn:label ID="lblPublishedDate" runat="server" Text="Published Date" HelpText="Date Game was added to service"></dnn:label>
-<asp:TextBox ID="txtPublishedDate" runat="server"></asp:TextBox>
-<br/>
-
 <dnn:label ID="lblAgeRating" runat="server" Text="Age Rating" HelpText="Suggested age rating for the game."></dnn:label>
 <asp:DropDownList ID="ddlAgeRating" runat="server"></asp:DropDownList>
 <br/>
