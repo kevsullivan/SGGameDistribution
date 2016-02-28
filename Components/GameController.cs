@@ -63,7 +63,7 @@ namespace Christoc.Modules.SGGameDistribution.Components
             {
                 g.GameId = DataProvider.Instance().AddGame(g);
                 
-                //add content item integration - create content items, get id, save task.
+                //add content item integration - create content items, get id, save game.
             }
             else
             {
