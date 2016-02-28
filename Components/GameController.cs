@@ -56,18 +56,24 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// </summary>
         /// <param name="g"></param>
         /// <param name="tabId"></param>
-        /// <returns></returns>
+        /// <returns>ID of Saved Game</returns>
         public static int SaveGame(Game g, int tabId)
         {
             if (g.GameId < 1)
             {
                 g.GameId = DataProvider.Instance().AddGame(g);
                 
-                //add content item integration - create content items, get id, save game.
+                //Content Item Integration
+                var contentTaxonomy = new Taxonomy.Content();
+                var objContentItem = contentTaxonomy.CreateContentItem(g, tabId);
+                g.ContentItemId = objContentItem.ContentItemId;
+                SaveGame(g, tabId);
             }
             else
             {
                 DataProvider.Instance().UpdateGame(g);
+                var contentTaxonomy = new Taxonomy.Content();
+                contentTaxonomy.UpdateContentItem(g, tabId);
             }
             return g.GameId;
         }
