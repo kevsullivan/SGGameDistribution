@@ -62,6 +62,20 @@ namespace Christoc.Modules.SGGameDistribution
                 ddlDeveloper.DataValueField = "UserId";
                 ddlDeveloper.DataBind();
 
+                // Can Check GameId from Property Defined in SGGameDistributionModuleBase.
+                if (GameId > 0)
+                {
+                    var game = GameController.GetGame(GameId);
+                    if (game != null)
+                    {
+                        txtName.Text = game.GameName;
+                        txtDescription.Text = game.GameDescription;
+                        txtDownloadUrl.Text = game.DownloadUrl;
+                        ddlDeveloper.Items.FindByValue(game.DeveloperId.ToString()).Selected = true;
+                        //TODO: Auto select previous age in edit view.
+                        //ddlAgeRating.Items.FindByValue(game.AgeRating.ToString()).Selected = true;
+                    }
+                }
                 ddlAgeRating.DataSource = new ArrayList {0, 12, 15, 18, 21};
                 ddlAgeRating.DataBind();
             }
@@ -76,19 +90,35 @@ namespace Christoc.Modules.SGGameDistribution
         protected void buttonSubmit_Click(object sender, EventArgs e)
         {
             Game g;
-            g = new Game
+
+            if (GameId > 0)
+            {
+                g = GameController.GetGame(GameId);
+                g.GameName = txtName.Text.Trim();
+                g.GameDescription = txtDescription.Text.Trim();
+                g.LastModifiedByUserId = UserId;
+                g.LastModifiedOnDate = DateTime.Now;
+                g.DownloadUrl = txtDownloadUrl.Text.Trim();
+                //TODO: Validate reasoning for developerId to be editable. Perhaps better to be able to append Developers in case extra come in futrue patches to games.
+                g.DeveloperId = Convert.ToInt32(ddlDeveloper.SelectedValue);
+                g.AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue);
+            }
+            else
             { 
-                DeveloperId = Convert.ToInt32(ddlDeveloper.SelectedValue),
-                CreatedOnDate = DateTime.Now,
-                CreatedByUserIDId = UserId,
-                //TODO: Sort out difference between Verified By and Last Modified By.
-                LastModifiedByUserId = UserId,
-                GameName = txtName.Text.Trim(),
-                GameDescription = txtDescription.Text.Trim(),
-                AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue),
-                DownloadUrl = txtDownloadUrl.Text.Trim(),
-                ModuleId = ModuleId
-            };
+                g = new Game
+                {
+                    DeveloperId = Convert.ToInt32(ddlDeveloper.SelectedValue),
+                    CreatedOnDate = DateTime.Now,
+                    CreatedByUserIDId = UserId,
+                    //TODO: Sort out difference between Verified By and Last Modified By.
+                    LastModifiedByUserId = UserId,
+                    GameName = txtName.Text.Trim(),
+                    GameDescription = txtDescription.Text.Trim(),
+                    AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue),
+                    DownloadUrl = txtDownloadUrl.Text.Trim(),
+                    ModuleId = ModuleId
+                };
+            }
 
             /*Check Dates
             DateTime outputDate;

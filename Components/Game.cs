@@ -31,6 +31,11 @@ namespace Christoc.Modules.SGGameDistribution.Components
         public int DeveloperId { get; set; }
 
         /// <summary>
+        /// Name of Serenity Gaming User who created the game.
+        /// </summary>
+        public string DeveloperName { get; set; }
+
+        /// <summary>
         /// The moduleId of where the game was created and gets displayed
         /// </summary>
         public int ModuleId { get; set; }
@@ -96,7 +101,7 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <param name="dr"></param>
         public override void Fill(IDataReader dr)
         {
-            //TODO: solve out of bounds issue here when calling save task.
+            //TODO: solve out of bounds issue here when calling save game.
             //TODO: Currently out of bounds issue resolved by altering naming conventions e.g. VerifiedBy -> CreatedByUserId
             //TODO: Find source of naming conflicts so I can use personal naming conventions - Might be Fill Method (IHydratable) or Some stored Values in Templates for ContentItems Data Table Values.
             base.FillInternal(dr);
@@ -106,6 +111,8 @@ namespace Christoc.Modules.SGGameDistribution.Components
             GameName = Null.SetNullString(dr["GameName"]);
             GameDescription = Null.SetNullString(dr["GameDescription"]);
             DeveloperId = Null.SetNullInteger(dr["DeveloperId"]);
+            //TODO out of bounds on Username fix datareader
+            DeveloperName = Null.SetNullString(dr["Username"]);
             CreatedOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
             CreatedByUserIDId = Null.SetNullInteger(dr["CreatedByUserID"]);
             LastModifiedByUserId = Null.SetNullInteger(dr["LastModifiedByUserID"]);

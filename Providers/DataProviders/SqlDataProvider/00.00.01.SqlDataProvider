@@ -167,9 +167,11 @@ SELECT
 	, CI.TabID
 	, CI.ContentKey
 	, CI.Indexed
+	, u.Username
 FROM
 	{databaseOwner}{objectQualifier}SGGameDistribution_Game g
 	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON g.ContentItemId = CI.ContentItemID
+	INNER JOIN {databaseOwner}{objectQualifier}Users AS u ON g.DeveloperId = u.UserId 
 WHERE
 	g.GameId = @GameId
 GO
@@ -199,9 +201,11 @@ SELECT
 	, CI.TabID
 	, CI.ContentKey
 	, CI.Indexed
+	, u.Username
 FROM
 	{databaseOwner}{objectQualifier}SGGameDistribution_Game g
 	INNER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON g.ContentItemId = CI.ContentItemID
+	INNER JOIN {databaseOwner}{objectQualifier}Users AS u ON g.DeveloperId = u.UserId 
 WHERE
 	g.ModuleId = @ModuleId
 GO

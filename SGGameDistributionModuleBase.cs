@@ -10,11 +10,35 @@
 ' 
 */
 
+using System;
 using DotNetNuke.Entities.Modules;
 
 namespace Christoc.Modules.SGGameDistribution
 {
+    /// <summary>
+    /// Class can be used to provide any custom properties and methods that all controls can access.
+    /// Can also access DNN Methods and Properties available off of Portalmodule base such as TabId, UserId, UserInfo etc.
+    /// </summary>
     public class SGGameDistributionModuleBase : PortalModuleBase
     {
+        /// <summary>
+        /// GameId Property Allows for search of GameId from within Controls. 
+        /// If returned value greater than 0 => Game being passed as query string parameter.
+        /// If less than 0 => No Game Passed.
+        /// </summary>
+        /// <returns>An Interger The GameId if Found else -1</returns>
+        public int GameId
+        {
+            get
+            {
+                var queryString = Request.QueryString["gid"];
+                if (queryString != null)
+                {
+                    return Convert.ToInt32(queryString);
+                }
+                return -1;
+            }
+
+        }
     }
 }

@@ -1,0 +1,12 @@
+.gameDist_CreatedOnDate {
+    font-style: italic;
+}
+
+.gameDist_gameDescription {
+    clear: both;
+    margin: 25px;
+}
+
+.gameDist_PrefixLabel {
+    font-weight: bold;
+}
