@@ -77,7 +77,7 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <summary>
         /// Name of system administrator who ok'd the publishing of game to Serenity Gaming service.
         /// </summary>
-        public string VerifiedByUserName => CreatedByUserID != 0 ? DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, VerifiedById).Username : Null.NullString;
+        public string VerifiedByUserName => VerifiedById != 0 ? DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, VerifiedById).Username : Null.NullString;
 
         /// <summary>
         /// Name of admin who implemented most recent modification.
@@ -96,6 +96,7 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <param name="dr"></param>
         public override void Fill(IDataReader dr)
         {
+            //TODO solve out of bounds issue here when calling save task.
             base.FillInternal(dr);
             // Map objects in Data reader to Game properties.
             GameId = Null.SetNullInteger(dr["GameId"]);

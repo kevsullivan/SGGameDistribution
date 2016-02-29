@@ -86,7 +86,8 @@ namespace Christoc.Modules.SGGameDistribution
                 GameName = txtName.Text.Trim(),
                 GameDescription = txtDescription.Text.Trim(),
                 AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue),
-                DownloadUrl = txtDownloadUrl.Text.Trim()
+                DownloadUrl = txtDownloadUrl.Text.Trim(),
+                ModuleId = ModuleId
             };
 
             /*Check Dates

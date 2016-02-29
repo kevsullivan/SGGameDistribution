@@ -11,6 +11,7 @@
 */
 
 using System;
+using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Entities.Modules;
@@ -34,11 +35,23 @@ namespace Christoc.Modules.SGGameDistribution
     /// -----------------------------------------------------------------------------
     public partial class View : SGGameDistributionModuleBase, IActionable
     {
+        protected override void OnInit(EventArgs e)
+        {
+            InitializeComponent();
+            base.OnInit(e);
+        }
+
+        private void InitializeComponent()
+        {
+            this.Load += new System.EventHandler(this.Page_Load);
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-
+                // ModuleId Exposed from PortalModuleBase
+                rptGameList.DataSource = GameController.GetGames(ModuleId);
+                rptGameList.DataBind();
             }
             catch (Exception exc) //Module failed to load
             {
