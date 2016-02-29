@@ -79,8 +79,8 @@ namespace Christoc.Modules.SGGameDistribution
             g = new Game
             { 
                 DeveloperId = Convert.ToInt32(ddlDeveloper.SelectedValue),
-                PublishedDate = DateTime.Now,
-                VerifiedById = UserId,
+                CreatedOnDate = DateTime.Now,
+                CreatedByUserIDId = UserId,
                 //TODO: Sort out difference between Verified By and Last Modified By.
                 LastModifiedByUserId = UserId,
                 GameName = txtName.Text.Trim(),
@@ -92,9 +92,9 @@ namespace Christoc.Modules.SGGameDistribution
 
             /*Check Dates
             DateTime outputDate;
-            if (DateTime.TryParse(txtPublishedDate.Text.Trim(), out outputDate))
+            if (DateTime.TryParse(txtCreatedOnDate.Text.Trim(), out outputDate))
             {
-                g.PublishedDate = outputDate;
+                g.CreatedOnDate = outputDate;
             }*/
 
             GameController.SaveGame(g, TabId);

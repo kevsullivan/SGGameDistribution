@@ -11,6 +11,7 @@
 */
 
 using System;
+using System.Linq;
 using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;

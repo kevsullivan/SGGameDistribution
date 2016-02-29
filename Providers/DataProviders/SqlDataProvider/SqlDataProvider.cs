@@ -173,8 +173,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// , @GameDescription nvarchar
         /// , @DeveloperId
         /// , @ModuleId
-        /// , @PublishedDate
-        /// , @VerifiedBy
+        /// , @CreatedOnDate
+        /// , @CreatedByUserID
         /// , @AgeRating
         /// , @DownloadUrl nvarchar
         /// </summary>
@@ -187,8 +187,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@GameDescription", g.GameDescription)
                 , new SqlParameter("@DeveloperId", g.DeveloperId)
                 , new SqlParameter("@ModuleId", g.ModuleId)
-                , new SqlParameter("@PublishedDate", g.PublishedDate)
-                , new SqlParameter("@VerifiedBy", g.VerifiedById)
+                , new SqlParameter("@CreatedOnDate", g.CreatedOnDate)
+                , new SqlParameter("@CreatedByUserID", g.CreatedByUserIDId)
                 , new SqlParameter("@AgeRating", g.AgeRating)
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
                 ));

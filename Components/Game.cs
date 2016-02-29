@@ -38,18 +38,18 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <summary>
         /// Date the game was originaly added to Serenity Gaming
         /// </summary>
-        public DateTime PublishedDate { get; set; }
+        public DateTime CreatedOnDate { get; set; }
 
         /// <summary>
         /// Id of system administrator who ok'd the publishing of game to Serenity Gaming service.
         /// </summary>
-        public int VerifiedById { get; set; }
+        public int CreatedByUserIDId { get; set; }
 
         /// <summary>
         /// Date of last information modification of the game.
         /// Modifications could occur after patches etc. when new information about game is available.
         /// </summary>
-        public DateTime LastUpdatedOnDate { get; set; }
+        public DateTime LastModifiedOnDate { get; set; }
 
         /// <summary>
         /// Id of admin who implemented most recent modification.
@@ -77,7 +77,7 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <summary>
         /// Name of system administrator who ok'd the publishing of game to Serenity Gaming service.
         /// </summary>
-        public string VerifiedByUserName => VerifiedById != 0 ? DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, VerifiedById).Username : Null.NullString;
+        public string CreatedByUserIDUserName => CreatedByUserIDId != 0 ? DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, CreatedByUserIDId).Username : Null.NullString;
 
         /// <summary>
         /// Name of admin who implemented most recent modification.
@@ -96,7 +96,9 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <param name="dr"></param>
         public override void Fill(IDataReader dr)
         {
-            //TODO solve out of bounds issue here when calling save task.
+            //TODO: solve out of bounds issue here when calling save task.
+            //TODO: Currently out of bounds issue resolved by altering naming conventions e.g. VerifiedBy -> CreatedByUserId
+            //TODO: Find source of naming conflicts so I can use personal naming conventions - Might be Fill Method (IHydratable) or Some stored Values in Templates for ContentItems Data Table Values.
             base.FillInternal(dr);
             // Map objects in Data reader to Game properties.
             GameId = Null.SetNullInteger(dr["GameId"]);
@@ -104,10 +106,10 @@ namespace Christoc.Modules.SGGameDistribution.Components
             GameName = Null.SetNullString(dr["GameName"]);
             GameDescription = Null.SetNullString(dr["GameDescription"]);
             DeveloperId = Null.SetNullInteger(dr["DeveloperId"]);
-            PublishedDate = Null.SetNullDateTime(dr["PublishedDate"]);
-            VerifiedById = Null.SetNullInteger(dr["VerifiedById"]);
-            LastModifiedByUserId = Null.SetNullInteger(dr["LastModifiedById"]);
-            LastUpdatedOnDate = Null.SetNullDateTime(dr["LastUpdatedOnDate"]);
+            CreatedOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
+            CreatedByUserIDId = Null.SetNullInteger(dr["CreatedByUserID"]);
+            LastModifiedByUserId = Null.SetNullInteger(dr["LastModifiedByUserID"]);
+            LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
             AgeRating = Null.SetNullInteger(dr["AgeRating"]);
             DownloadUrl = Null.SetNullString(dr["DownloadUrl"]);
         }

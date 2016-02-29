@@ -10,7 +10,7 @@
         <h3>
             <asp:Label ID="lblGameName" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameName").ToString() %>'/>
         </h3>
-        <asp:Label ID="lblPublishedDate" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "PublishedDate").ToString() %>' CssClass="gameDist_publishedDate"/>
+        <asp:Label ID="lblCreatedOnDate" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "CreatedOnDate").ToString() %>' CssClass="gameDist_CreatedOnDate"/>
         <asp:Label ID="lblGameDescription" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameDescription").ToString() %>' CssClass="gameDist_gameDescription"/>
     
     </li>

@@ -19,10 +19,10 @@ CREATE TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game
 	GameDescription nvarchar(MAX) NOT NULL,
 	DeveloperId int NOT NULL,
 	ModuleId int NOT NULL,
-	PublishedDate datetime NOT NULL,
+	CreatedOnDate datetime NOT NULL,
 	ContentItemId int NULL,
-	VerifiedBy int NOT NULL,
-	LastUpdatedOnDate datetime NOT NULL,
+	CreatedByUserID int NOT NULL,
+	LastModifiedOnDate datetime NOT NULL,
 	LastModifiedByUserId int NOT NULL,
 	AgeRating int NOT NULL,
 	DownloadUrl nvarchar(MAX) NOT NULL
@@ -48,8 +48,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddGame
 , @GameDescription nvarchar (max)
 , @DeveloperId int
 , @ModuleId int
-, @PublishedDate datetime
-, @VerifiedBy int
+, @CreatedOnDate datetime
+, @CreatedByUserID int
 , @AgeRating int
 , @DownloadUrl nvarchar (max)
 
@@ -59,10 +59,10 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			,[GameDescription]
 			,[DeveloperId]
 			,[ModuleId]
-			,[PublishedDate]
+			,[CreatedOnDate]
 			,[ContentItemId]
-			,[VerifiedBy]
-			,[LastUpdatedOnDate]
+			,[CreatedByUserID]
+			,[LastModifiedOnDate]
 			,[LastModifiedByUserId]
 			,[AgeRating]
 			,[DownloadUrl])
@@ -71,11 +71,11 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, @GameDescription
 			, @DeveloperId
 			, @ModuleId
-			, @PublishedDate
+			, @CreatedOnDate
 			, -1 --TODO: Update ContentItemId Handling
-			, @VerifiedBy
+			, @CreatedByUserID
 			, GETDATE()
-			, @VerifiedBy
+			, @CreatedByUserID
 			, @AgeRating
 			, @DownloadUrl
 		)
@@ -107,7 +107,7 @@ UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, DeveloperId = @DeveloperId
 			, ModuleId = @ModuleId
 			, ContentItemId = @ContentItemId
-			, LastUpdatedOnDate = GETDATE()
+			, LastModifiedOnDate = GETDATE()
 			, LastModifiedByUserId = @LastModifiedByUserId
 			, AgeRating = @AgeRating
 			, DownloadUrl = @DownloadUrl
@@ -155,9 +155,9 @@ SELECT
 	, g.GameName
 	, g.GameDescription
 	, g.DeveloperId
-	, g.PublishedDate
-	, g.VerifiedBy
-	, g.LastUpdatedOnDate
+	, g.CreatedOnDate
+	, g.CreatedByUserID
+	, g.LastModifiedOnDate
 	, g.LastModifiedByUserId
 	, g.AgeRating
 	, g.DownloadUrl
@@ -187,9 +187,9 @@ SELECT
 	, g.GameName
 	, g.GameDescription
 	, g.DeveloperId
-	, g.PublishedDate
-	, g.VerifiedBy
-	, g.LastUpdatedOnDate
+	, g.CreatedOnDate
+	, g.CreatedByUserID
+	, g.LastModifiedOnDate
 	, g.LastModifiedByUserId
 	, g.AgeRating
 	, g.DownloadUrl
