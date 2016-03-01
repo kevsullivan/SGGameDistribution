@@ -2,13 +2,13 @@
   <packages>
     <package name="SGGameDistribution" type="Module" version="00.00.01">
       <friendlyName>SGGameDistribution</friendlyName>
-      <description>Christoc.com SGGameDistribution module</description>
+      <description>SGGameDistribution module</description>
       <iconFile>Images/icon_extensions.gif</iconFile>
       <owner>
-        <name>Christoc.com</name>
-        <organization>Christoc.com</organization>
-        <url>http://www.christoc.com</url>
-        <email>modules@christoc.com</email>
+        <name>serenity-gaming-dnn.azurewebsites.net/</name>
+        <organization>Serenity Gaming</organization>
+        <url>http://serenity-gaming-dnn.azurewebsites.net/</url>
+        <email>kevsullivan@live.ie</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>

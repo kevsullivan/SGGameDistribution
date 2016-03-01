@@ -1,16 +1,18 @@
 ﻿<h3>SGGameDistribution</h3>
 <p class="Contributor">
-	Christoc.com <br />
-	<a href="mailto:modules@christoc.com">modules@christoc.com</a><br />
-	<a href=http://www.christoc.com>http://www.christoc.com</a><br />
+	kevinosullivan.info <br />
+	<a href="mailto:kevsullivan@live.ie">kevsullivan@live.ie</a><br />
+	<a href="http://serenity-gaming-dnn.azurewebsites.net/">serenity-gaming-dnn.azurewebsites.net/</a><br />
 </p>
 <hr/>
 <div class="License">
-	<h3>About the SGGameDistribution</h3>
+	<h3>Serenity Gaming is a FYP project developed By Kevin O'Sullivan. This module will cover the Game Distribution aspect of the project being implemented.</h3>
 	<p class="Owner">
-		<b>Version CHANGEME</b><br /><br />
+		<b>Version 00.00.01</b><br /><br />
 	</p>
-	<p>Description about version.</p>
+	<p>This is an initial version of the Serenity Gaming Game Distribution Module for DNN Services. Functionality is Limited to Adding Games Through Edit Module
+	   Games can then be updated and deleted as required. Games Require an install Link/Download Url.
+	</p>
 	
 	<h4>Bug Fixes</h4>
 	<ul>

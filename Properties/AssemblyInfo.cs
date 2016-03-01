@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SGGameDistribution")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A Basic Game Distribution Module For Adding Games With Install Links to your DNN Website.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Serenity Gaming")]
 [assembly: AssemblyProduct("SGGameDistribution")]
 [assembly: AssemblyCopyright("Copyright © 2016")]
 [assembly: AssemblyTrademark("")]
