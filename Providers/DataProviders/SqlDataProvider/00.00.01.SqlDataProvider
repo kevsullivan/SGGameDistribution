@@ -38,6 +38,34 @@ ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAI
 
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDownloads]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}SGGameDownloads]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}SGGameDownloads
+	(
+	DownloadId int NOT NULL IDENTITY (1, 1),
+	GameId int NOT NULL,
+	GameName nvarchar(MAX) NOT NULL,
+	DownloaderId int NOT NULL,
+	ModuleId int NOT NULL,
+	TimesDownloaded int NOT NULL,
+	FirstDownload datetime NULL,
+	LatestDownload datetime NULL,
+	IsLegalDownload bit NULL,
+	GameDevId int NOT NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}SGGameDownloads ADD CONSTRAINT
+	PK_{objectQualifier}GameDownloads PRIMARY KEY CLUSTERED 
+	(
+	DownloadId
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
+
 IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_AddGame') and OBJECTPROPERTY(id, N'IsProcedure')=1)
 	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddGame
 GO
@@ -209,6 +237,67 @@ FROM
 WHERE
 	g.ModuleId = @ModuleId
 GO
+
+
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_AddDownload') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddDownload
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddDownload
+
+@GameName nvarchar (max)
+, @GameId int
+, @GameDevId int
+, @ModuleId int
+, @DownloaderId int
+, @IsLegalDownload bit
+
+AS
+INSERT INTO {databaseOwner}[{objectQualifier}SGGameDownloads]
+			([GameId]
+			,[GameName]
+			,[DownloaderId]
+			,[ModuleId]
+			,[TimesDownloaded]
+			,[FirstDownload]
+			,[LatestDownload]
+			,[IsLegalDownload]
+			,[GameDevId])
+	VALUES
+		(@GameId
+			, @GameName
+			, @DownloaderId
+			, @ModuleId
+			, 1 --TODO: Ensure AddDownload Only Called Once further downloads should call UpdateDownload And Increment TimesDownloaded each time.
+			, GETDATE() -- TODO: Again if only called once GETDATE() will work else need use - @CreatedOnDate
+			, GETDATE()
+			, @IsLegalDownload
+			, @GameDevId
+		)
+GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_UpdateDownload') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateDownload
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateDownload
+
+@GameId int
+, @DownloaderId int
+, @IsLegalDownload bit
+
+AS
+UPDATE {databaseOwner}[{objectQualifier}SGGameDownloads]
+			Set
+			IsLegalDownload = @IsLegalDownload
+			, LatestDownload = GETDATE()
+			, TimesDownloaded = TimesDownloaded + 1
+WHERE
+			GameId = @GameId AND DownloaderId = @DownloaderId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
