@@ -76,20 +76,23 @@ namespace Christoc.Modules.SGGameDistribution
             {
                 var linkEdit = e.Item.FindControl("linkEdit") as LinkButton;
                 var linkDelete = e.Item.FindControl("linkDelete") as LinkButton;
+                var linkDownload = e.Item.FindControl("linkDownload") as LinkButton;
                 var panelAdminControls = e.Item.FindControl("panelAdmin") as Panel;
 
                 var currentGame = (Game) e.Item.DataItem;
 
                 // Check User Logged in has edit rights and edit control + panel exist.
                 // TODO: Might be better to seperate contruction of Delete/Edit Visbilities e.g User Can edit games but not delete.
-                if (IsEditable && linkDelete != null && linkEdit != null && panelAdminControls != null)
+                if (IsEditable && linkDelete != null && linkEdit != null &&linkDownload != null && panelAdminControls != null)
                 {
                     panelAdminControls.Visible = true;
-                    linkDelete.CommandArgument = linkEdit.CommandArgument = currentGame.GameId.ToString();
+                    linkDownload.CommandArgument = linkDelete.CommandArgument = linkEdit.CommandArgument = currentGame.GameId.ToString();
                     linkDelete.Enabled = linkDelete.Visible = linkEdit.Enabled = linkEdit.Visible = true;
 
                     // Adds JS to button to create popup confirmation dialog that is set in view.ascx.resx file
                     ClientAPI.AddButtonConfirm(linkDelete, Localization.GetString("ConfirmDelete", LocalResourceFile));
+                    // Adds JS to button to create popup announcement that game is downloading
+                    ClientAPI.AddButtonConfirm(linkDownload, Localization.GetString("ConfirmDownload", LocalResourceFile));
                 }
                 else
                 {
@@ -114,6 +117,22 @@ namespace Christoc.Modules.SGGameDistribution
             if (e.CommandName == "Delete")
             {
                 GameController.DeleteGame(Convert.ToInt32(e.CommandArgument));
+            }
+            //TODO: Handle downloads
+            if (e.CommandName == "Download")
+            {
+                //e.CommandArgument = gid - downloads attached to stored games so guarenteed valid gid.
+                Game g = GameController.GetGame(Convert.ToInt32(e.CommandArgument));
+                Download d = new Download
+                {
+                    GameId = g.GameId,
+                    GameDevId = g.DeveloperId,
+                    GameName = g.GameName,
+                    DownloaderId = UserId,
+                    ModuleId = ModuleId,
+                    IsLegalDownload = true
+                };
+                DownloadController.SaveDownload(d, TabId);
             }
 
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());

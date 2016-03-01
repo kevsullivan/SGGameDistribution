@@ -29,9 +29,8 @@
             <asp:Label ID="lblAgeRating" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "AgeRating").ToString() %>' ></asp:Label>
             <br/>
            
-            <asp:Label ID="prefixDownloadUrl" runat="server" Text="Download Url" CssClass="gameDist_PrefixLabel"></asp:Label>
-            &nbsp;
-            <a href='<%#DataBinder.Eval(Container.DataItem, "DownloadUrl").ToString() %>' target="_blank"><asp:Label ID="lblDownloadUrl" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "DownloadUrl").ToString() %>'></asp:Label></a>
+            
+            <asp:LinkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server"></asp:LinkButton>
             
 
             <asp:Panel ID="panelAdmin" Visible="False" runat="server">

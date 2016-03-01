@@ -241,7 +241,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@GameDevId", d.GameDevId)
                 , new SqlParameter("@ModuleId", d.ModuleId)
                 , new SqlParameter("@DownloaderId", d.DownloadId)
-                , new SqlParameter("@IsLegalDownload", d.IsLegalDownload)
+                , new SqlParameter("@IsLegalDownload", d.IsLegalDownload ? 1 : 0)
                 );
         }
 
@@ -260,7 +260,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
             SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "UpdateGame"
                 , new SqlParameter("@GameId", d.GameId)
                 , new SqlParameter("@DownloaderId", d.DownloaderId)
-                , new SqlParameter("@IsLegalDownload", d.IsLegalDownload)
+                , new SqlParameter("@IsLegalDownload", d.IsLegalDownload ? 1 : 0)
                 );
         }
         #endregion

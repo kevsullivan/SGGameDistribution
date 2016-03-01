@@ -40,5 +40,18 @@ namespace Christoc.Modules.SGGameDistribution
             }
 
         }
+        public int DownloadId
+        {
+            get
+            {
+                var queryString = Request.QueryString["DownloadId"];
+                if (queryString != null)
+                {
+                    return Convert.ToInt32(queryString);
+                }
+                return -1;
+            }
+
+        }
     }
 }

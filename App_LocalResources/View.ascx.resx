@@ -120,8 +120,14 @@
   <data name="ConfirmDelete.Text" xml:space="preserve">
     <value>Are you sure you want to delete this Game?</value>
   </data>
+  <data name="ConfirmDownload.Text" xml:space="preserve">
+    <value>Click Ok to confirm download. Download should begin automatically.</value>
+  </data>
   <data name="DeleteGame.Text" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DownloadGame.Text" xml:space="preserve">
+    <value>Download</value>
   </data>
   <data name="EditGame.Text" xml:space="preserve">
     <value>Edit</value>

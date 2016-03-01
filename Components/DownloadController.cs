@@ -15,6 +15,7 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// <param name="g"></param>
         /// <param name="tabId"></param>
         /// <returns>ID of Saved Game</returns>
+        /// TODO: Save downloads still buggy e.g. just adding new downloads each time and not updating count of a particular download instead.
         public static int SaveDownload(Download d, int tabId)
         {
             if (d.DownloadId < 1)
