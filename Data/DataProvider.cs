@@ -93,6 +93,10 @@ namespace Christoc.Modules.SGGameDistribution.Data
 
         public abstract void UpdateGame(Game g);
 
+        public abstract void AddDownload(Download d);
+
+        public abstract void UpdateDownload(Download d);
+
         #endregion
 
     }

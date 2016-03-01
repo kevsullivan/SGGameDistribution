@@ -222,6 +222,47 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
                 );
         }
+
+        /// <summary>
+        /// From SqlDataProvider Stored Procedure Parameters are:
+        /// @GameName nvarchar (max)
+        /// , @GameId int
+        /// , @GameDevId int
+        /// , @ModuleId int
+        /// , @DownloaderId int
+        /// , @IsLegalDownload bit
+        /// </summary>
+        /// <param name="g"></param>
+        public override void AddDownload(Download d)
+        {
+            SqlHelper.ExecuteScalar(ConnectionString, CommandType.StoredProcedure, NamePrefix + "AddDownload"
+                , new SqlParameter("@GameName", d.GameName)
+                , new SqlParameter("@GameId", d.GameId)
+                , new SqlParameter("@GameDevId", d.GameDevId)
+                , new SqlParameter("@ModuleId", d.ModuleId)
+                , new SqlParameter("@DownloaderId", d.DownloadId)
+                , new SqlParameter("@IsLegalDownload", d.IsLegalDownload)
+                );
+        }
+
+        /// <summary>
+        /// From SqlDataProvider Stored Procedure Parameters are:
+        /// @GameId int
+        /// , @DownloaderId int
+        /// , @IsLegalDownload bit
+        /// Update aims to just increment count of downloads for user hence low amount of required parameters.
+        /// Legality of game can change over time as downloader ages.
+        /// TODO: An idea would be to add to Downloads table a field for "Was ever illegaly downloaded"
+        /// </summary>
+        /// <param name="g"></param>
+        public override void UpdateDownload(Download d)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "UpdateGame"
+                , new SqlParameter("@GameId", d.GameId)
+                , new SqlParameter("@DownloaderId", d.DownloaderId)
+                , new SqlParameter("@IsLegalDownload", d.IsLegalDownload)
+                );
+        }
         #endregion
 
     }

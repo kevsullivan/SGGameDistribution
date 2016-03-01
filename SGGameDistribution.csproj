@@ -69,6 +69,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Download.cs" />
+    <Compile Include="Components\DownloadController.cs" />
     <Compile Include="Components\FeatureController.cs" />
     <Compile Include="Components\Game.cs" />
     <Compile Include="Components\GameController.cs" />
