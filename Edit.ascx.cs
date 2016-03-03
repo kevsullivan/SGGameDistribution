@@ -87,6 +87,12 @@ namespace Christoc.Modules.SGGameDistribution
 
         #endregion
 
+        /// <summary>
+        /// Submit exists in but edit and add functionality - if editing the GameId will exist for stored game so we can just edit that
+        /// Other wise create a new game with defined values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void buttonSubmit_Click(object sender, EventArgs e)
         {
             Game g;

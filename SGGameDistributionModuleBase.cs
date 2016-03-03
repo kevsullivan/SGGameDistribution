@@ -11,6 +11,7 @@
 */
 
 using System;
+using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Entities.Modules;
 
 namespace Christoc.Modules.SGGameDistribution
@@ -32,19 +33,6 @@ namespace Christoc.Modules.SGGameDistribution
             get
             {
                 var queryString = Request.QueryString["gid"];
-                if (queryString != null)
-                {
-                    return Convert.ToInt32(queryString);
-                }
-                return -1;
-            }
-
-        }
-        public int DownloadId
-        {
-            get
-            {
-                var queryString = Request.QueryString["DownloadId"];
                 if (queryString != null)
                 {
                     return Convert.ToInt32(queryString);

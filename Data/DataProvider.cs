@@ -97,6 +97,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
 
         public abstract void UpdateDownload(Download d);
 
+        public abstract IDataReader CheckForDownload(int downloaderId, int gameId);
+
         #endregion
 
     }

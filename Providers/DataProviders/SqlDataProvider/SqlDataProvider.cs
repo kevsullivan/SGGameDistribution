@@ -240,7 +240,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@GameId", d.GameId)
                 , new SqlParameter("@GameDevId", d.GameDevId)
                 , new SqlParameter("@ModuleId", d.ModuleId)
-                , new SqlParameter("@DownloaderId", d.DownloadId)
+                , new SqlParameter("@DownloaderId", d.DownloaderId)
                 , new SqlParameter("@IsLegalDownload", d.IsLegalDownload ? 1 : 0)
                 );
         }
@@ -257,10 +257,24 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// <param name="g"></param>
         public override void UpdateDownload(Download d)
         {
-            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "UpdateGame"
+            SqlHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, NamePrefix + "UpdateDownload"
                 , new SqlParameter("@GameId", d.GameId)
                 , new SqlParameter("@DownloaderId", d.DownloaderId)
                 , new SqlParameter("@IsLegalDownload", d.IsLegalDownload ? 1 : 0)
+                );
+        }
+
+        /// <summary>
+        /// Check if user has downloaded specific game before.
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <param name="downloaderId"></param>
+        /// <returns>Data reader object containing result of query</returns>
+        public override IDataReader CheckForDownload(int downloaderId, int gameId)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, NamePrefix + "CheckForDownload"
+                , new SqlParameter("@GameId", gameId)
+                , new SqlParameter("@DownloaderId", downloaderId)
                 );
         }
         #endregion

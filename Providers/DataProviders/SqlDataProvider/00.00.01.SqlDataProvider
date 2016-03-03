@@ -298,6 +298,24 @@ WHERE
 			GameId = @GameId AND DownloaderId = @DownloaderId
 GO
 
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_CheckForDownload') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_CheckForDownload
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_CheckForDownload
+
+@GameId int
+, @DownloaderId int
+
+AS
+SELECT 
+	DownloaderId
+FROM
+	{databaseOwner}[{objectQualifier}SGGameDownloads]
+WHERE
+	GameId = @GameId AND DownloaderId = @DownloaderId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

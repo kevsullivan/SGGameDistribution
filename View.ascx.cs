@@ -83,14 +83,19 @@ namespace Christoc.Modules.SGGameDistribution
 
                 // Check User Logged in has edit rights and edit control + panel exist.
                 // TODO: Might be better to seperate contruction of Delete/Edit Visbilities e.g User Can edit games but not delete.
-                if (IsEditable && linkDelete != null && linkEdit != null &&linkDownload != null && panelAdminControls != null)
+                if (IsEditable && linkDelete != null && linkEdit != null && panelAdminControls != null)
                 {
                     panelAdminControls.Visible = true;
-                    linkDownload.CommandArgument = linkDelete.CommandArgument = linkEdit.CommandArgument = currentGame.GameId.ToString();
+                    linkDelete.CommandArgument = linkEdit.CommandArgument = currentGame.GameId.ToString();
                     linkDelete.Enabled = linkDelete.Visible = linkEdit.Enabled = linkEdit.Visible = true;
 
                     // Adds JS to button to create popup confirmation dialog that is set in view.ascx.resx file
                     ClientAPI.AddButtonConfirm(linkDelete, Localization.GetString("ConfirmDelete", LocalResourceFile));
+                }
+                if (linkDownload != null)
+                {
+                    linkDownload.CommandArgument = currentGame.GameId.ToString();
+
                     // Adds JS to button to create popup announcement that game is downloading
                     ClientAPI.AddButtonConfirm(linkDownload, Localization.GetString("ConfirmDownload", LocalResourceFile));
                 }
@@ -123,21 +128,59 @@ namespace Christoc.Modules.SGGameDistribution
             {
                 //e.CommandArgument = gid - downloads attached to stored games so guarenteed valid gid.
                 Game g = GameController.GetGame(Convert.ToInt32(e.CommandArgument));
-                Download d = new Download
+                Download d = DownloadController.CheckDownload(UserId, g.GameId);
+                // if (DownloadBefore(UserId)) ;
+                // TODO: This probably isn't best solution for checking on downloads.
+                if (d != null)
                 {
-                    GameId = g.GameId,
-                    GameDevId = g.DeveloperId,
-                    GameName = g.GameName,
-                    DownloaderId = UserId,
-                    ModuleId = ModuleId,
-                    IsLegalDownload = true
-                };
+                    d.GameId = g.GameId;
+                    d.GameDevId = g.DeveloperId;
+                    d.GameName = g.GameName;
+                    d.DownloaderId = UserId;
+                    d.ModuleId = ModuleId;
+                    //TODO: Handle legal downloads
+                    d.IsLegalDownload = true;
+                }
+                else
+                {
+                    d = new Download
+                    {
+                        GameId = g.GameId,
+                        GameDevId = g.DeveloperId,
+                        GameName = g.GameName,
+                        DownloaderId = UserId,
+                        ModuleId = ModuleId,
+                        IsLegalDownload = true
+                    };
+                }
+
                 DownloadController.SaveDownload(d, TabId);
             }
 
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
-
+        protected void btnDownload_OnClick(object sender, EventArgs e)
+        {
+            string filename = "~/Downloads/msizap.exe";
+            if (filename != "")
+            {
+                string path = Server.MapPath(filename);
+                System.IO.FileInfo file = new System.IO.FileInfo(path);
+                if (file.Exists)
+                {
+                    Response.Clear();
+                    Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name);
+                    Response.AddHeader("Content-Length", file.Length.ToString());
+                    Response.ContentType = "application/octet-stream";
+                    Response.WriteFile(file.FullName);
+                    Response.End();
+                }
+                else
+                {
+                    Response.Write("This file does not exist.");
+                }
+            }
+        }
         public ModuleActionCollection ModuleActions
         {
             get

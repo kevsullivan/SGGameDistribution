@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Christoc.Modules.SGGameDistribution.Data;
+using DotNetNuke.Common.Utilities;
 
 namespace Christoc.Modules.SGGameDistribution.Components
 {
@@ -28,6 +29,11 @@ namespace Christoc.Modules.SGGameDistribution.Components
             }
             // TODO: Can probably remove this return as I'm not using content item integration for downloads
             return d.DownloadId;
+        }
+
+        public static Download CheckDownload(int UserId, int GameId)
+        {
+            return CBO.FillObject<Download>(DataProvider.Instance().CheckForDownload(UserId, GameId));
         }
     }
 }

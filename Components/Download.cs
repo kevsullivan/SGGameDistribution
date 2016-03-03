@@ -45,5 +45,10 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// </summary>
         public int GameDevId { get; set; }
 
+        public override void Fill(IDataReader dr)
+        {
+            DownloadId = Null.SetNullInteger(dr["DownloaderId"]);
+        }
+
     }
 }

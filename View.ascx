@@ -26,12 +26,11 @@
 
             <asp:Label ID="prefixAgeRating" runat="server" Text="Age Rating" CssClass="gameDist_PrefixLabel"></asp:Label>
             &nbsp;
-            <asp:Label ID="lblAgeRating" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "AgeRating").ToString() %>' ></asp:Label>
+            <asp:Label ID="lblAgeRating" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "AgeRating").ToString() %>'></asp:Label>
             <br/>
-           
-            
-            <asp:LinkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server"></asp:LinkButton>
-            
+
+
+            <asp:linkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server" OnClientClick="btnDownload_OnClick"></asp:linkButton>
 
             <asp:Panel ID="panelAdmin" Visible="False" runat="server">
                 <asp:LinkButton ID="linkEdit" CommandName="Edit" ResourceKey="EditGame.Text" Visible="False" Enabled="False" runat="server"></asp:LinkButton>
