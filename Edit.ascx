@@ -17,6 +17,10 @@
 <asp:DropDownList ID="ddlAgeRating" runat="server"></asp:DropDownList>
 <br/>
 
+<dnn:label ID="lblGenre" runat="server" Text="Game Genre" HelpText="What category the game falls into"></dnn:label>
+<asp:DropDownList ID="ddlGameGenre" runat="server"></asp:DropDownList>
+<br/>
+
 <dnn:label ID="lblDownloadUrl" runat="server" Text="Download" HelpText="Download Link for the game."></dnn:label>
 <asp:TextBox ID="txtDownloadUrl" runat="server"></asp:TextBox>
 <br/>

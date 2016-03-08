@@ -8,26 +8,32 @@
 /*****                                                  *****/
 /************************************************************/
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDistribution_Game]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
-GO
 
-CREATE TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game
-	(
-	GameId int NOT NULL IDENTITY (1, 1),
-	GameName nvarchar(MAX) NOT NULL,
-	GameDescription nvarchar(MAX) NOT NULL,
-	DeveloperId int NOT NULL,
-	ModuleId int NOT NULL,
-	CreatedOnDate datetime NOT NULL,
-	ContentItemId int NULL,
-	CreatedByUserID int NOT NULL,
-	LastModifiedOnDate datetime NOT NULL,
-	LastModifiedByUserId int NOT NULL,
-	AgeRating int NOT NULL,
-	DownloadUrl nvarchar(MAX) NOT NULL
-	)  ON [PRIMARY]
-	 TEXTIMAGE_ON [PRIMARY]
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDistribution_Game]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game
+		(
+		GameId int NOT NULL IDENTITY (1, 1),
+		GameName nvarchar(MAX) NOT NULL,
+		GameDescription nvarchar(MAX) NOT NULL,
+		DeveloperId int NOT NULL,
+		ModuleId int NOT NULL,
+		CreatedOnDate datetime NOT NULL,
+		ContentItemId int NULL,
+		CreatedByUserID int NOT NULL,
+		LastModifiedOnDate datetime NOT NULL,
+		LastModifiedByUserId int NOT NULL,
+		AgeRating int NOT NULL,
+		DownloadUrl nvarchar(MAX) NOT NULL,
+		GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
+		)  ON [PRIMARY]
+		 TEXTIMAGE_ON [PRIMARY]
+END
+ELSE IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'GameGenre' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
+END
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAINT
@@ -79,6 +85,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddGame
 , @CreatedOnDate datetime
 , @CreatedByUserID int
 , @AgeRating int
+, @GameGenre nvarchar (max)
 , @DownloadUrl nvarchar (max)
 
 AS
@@ -93,6 +100,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			,[LastModifiedOnDate]
 			,[LastModifiedByUserId]
 			,[AgeRating]
+			,[GameGenre]
 			,[DownloadUrl])
 	VALUES
 		(@GameName
@@ -105,6 +113,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, GETDATE()
 			, @CreatedByUserID
 			, @AgeRating
+			, @GameGenre
 			, @DownloadUrl
 		)
 --return the ID of the Game back so we can create a contentItemId
@@ -125,6 +134,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame
 , @ContentItemId int
 , @LastModifiedByUserId int
 , @AgeRating int
+, @GameGenre nvarchar (max)
 , @DownloadUrl nvarchar (max)
 
 AS
@@ -138,6 +148,7 @@ UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, LastModifiedOnDate = GETDATE()
 			, LastModifiedByUserId = @LastModifiedByUserId
 			, AgeRating = @AgeRating
+			, GameGenre = @GameGenre
 			, DownloadUrl = @DownloadUrl
 WHERE
 			GameId = @GameId
@@ -188,6 +199,7 @@ SELECT
 	, g.LastModifiedOnDate
 	, g.LastModifiedByUserId
 	, g.AgeRating
+	, g.GameGenre
 	, g.DownloadUrl
 	, CI.ContentItemID
 	, CI.Content
@@ -222,6 +234,7 @@ SELECT
 	, g.LastModifiedOnDate
 	, g.LastModifiedByUserId
 	, g.AgeRating
+	, g.GameGenre
 	, g.DownloadUrl
 	, CI.ContentItemID
 	, CI.Content

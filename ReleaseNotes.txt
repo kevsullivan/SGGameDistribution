@@ -8,7 +8,7 @@
 <div class="License">
 	<h3>Serenity Gaming is a FYP project developed By Kevin O'Sullivan. This module will cover the Game Distribution aspect of the project being implemented.</h3>
 	<p class="Owner">
-		<b>Version 00.00.01</b><br /><br />
+		<b>Version 00.00.03 Download Tracking for all users now but no links for installer attached to download button yet.</b><br /><br />
 	</p>
 	<p>This is an initial version of the Serenity Gaming Game Distribution Module for DNN Services. Functionality is Limited to Adding Games Through Edit Module
 	   Games can then be updated and deleted as required. Games Require an install Link/Download Url.

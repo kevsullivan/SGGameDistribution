@@ -85,6 +85,24 @@ namespace Christoc.Modules.SGGameDistribution {
         protected global::System.Web.UI.WebControls.DropDownList ddlAgeRating;
         
         /// <summary>
+        /// lblGenre control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblGenre;
+        
+        /// <summary>
+        /// ddlGameGenre control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGameGenre;
+        
+        /// <summary>
         /// lblDownloadUrl control.
         /// </summary>
         /// <remarks>

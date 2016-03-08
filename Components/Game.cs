@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using DotNetNuke.Common.Utilities;
@@ -70,6 +71,12 @@ namespace Christoc.Modules.SGGameDistribution.Components
         public int AgeRating { get; set; }
 
         /// <summary>
+        /// Genre assoictaed with the game, can currently be one of the following:
+        /// "FPS", "Action", "Adventure", "Indie", "Massive Multiplayer", "Racing", "RPG", "Sim", "Sports", "Strategy"
+        /// </summary>
+        public string GameGenre { get; set; }
+
+        /// <summary>
         /// Link for Game Download.
         /// </summary>
         public string DownloadUrl { get; set; }
@@ -119,6 +126,7 @@ namespace Christoc.Modules.SGGameDistribution.Components
             LastModifiedByUserId = Null.SetNullInteger(dr["LastModifiedByUserID"]);
             LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
             AgeRating = Null.SetNullInteger(dr["AgeRating"]);
+            GameGenre = Null.SetNullString(dr["GameGenre"]);
             DownloadUrl = Null.SetNullString(dr["DownloadUrl"]);
         }
 

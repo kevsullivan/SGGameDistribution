@@ -176,6 +176,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// , @CreatedOnDate
         /// , @CreatedByUserID
         /// , @AgeRating
+        /// , @GameGenre
         /// , @DownloadUrl nvarchar
         /// </summary>
         /// <param name="g"></param>
@@ -190,11 +191,12 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@CreatedOnDate", g.CreatedOnDate)
                 , new SqlParameter("@CreatedByUserID", g.CreatedByUserIDId)
                 , new SqlParameter("@AgeRating", g.AgeRating)
+                , new SqlParameter("@GameGenre", g.GameGenre)
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
                 ));
             return gId;
         }
-        
+
         /// <summary>
         /// From SqlDataProvider Stored Procedure Parameters are:
         /// @GameId
@@ -205,6 +207,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// , @ContentItemId
         /// , @LastModifiedByUserId
         /// , @AgeRating
+        /// , @GameGenre
         /// , @DownloadUrl
         /// </summary>
         /// <param name="g"></param>
@@ -219,6 +222,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@ContentItemId", g.ContentItemId)
                 , new SqlParameter("@LastModifiedByUserId", g.LastModifiedByUserId)
                 , new SqlParameter("@AgeRating", g.AgeRating)
+                , new SqlParameter("@GameGenre", g.GameGenre)
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
                 );
         }

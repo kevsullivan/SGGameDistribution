@@ -61,8 +61,12 @@ namespace Christoc.Modules.SGGameDistribution
                 ddlDeveloper.DataTextField = "Username";
                 ddlDeveloper.DataValueField = "UserId";
                 ddlDeveloper.DataBind();
+                ddlAgeRating.DataSource = new ArrayList { 0, 12, 15, 18, 21 };
+                ddlAgeRating.DataBind();
+                ddlGameGenre.DataSource = new ArrayList { "FPS", "Action", "Adventure", "Indie", "Massive Multiplayer", "Racing", "RPG", "Sim", "Sports", "Strategy" };
+                ddlGameGenre.DataBind();
 
-                // Can Check GameId from Property Defined in SGGameDistributionModuleBase.
+                // Can Check GameId from Property Defined in SGGameDistributionModuleBase. if > 0 it means editing a game so grab stored info
                 if (GameId > 0)
                 {
                     var game = GameController.GetGame(GameId);
@@ -72,12 +76,11 @@ namespace Christoc.Modules.SGGameDistribution
                         txtDescription.Text = game.GameDescription;
                         txtDownloadUrl.Text = game.DownloadUrl;
                         ddlDeveloper.Items.FindByValue(game.DeveloperId.ToString()).Selected = true;
-                        //TODO: Auto select previous age in edit view.
-                        //ddlAgeRating.Items.FindByValue(game.AgeRating.ToString()).Selected = true;
+                        //TODO: Auto select previous age in edit view and Game Genre
+                        ddlAgeRating.Items.FindByValue(game.AgeRating.ToString()).Selected = true;
+                        ddlGameGenre.Items.FindByValue(game.GameGenre).Selected = true;
                     }
                 }
-                ddlAgeRating.DataSource = new ArrayList {0, 12, 15, 18, 21};
-                ddlAgeRating.DataBind();
             }
             catch (Exception exc) //Module failed to load
             {
@@ -108,6 +111,9 @@ namespace Christoc.Modules.SGGameDistribution
                 //TODO: Validate reasoning for developerId to be editable. Perhaps better to be able to append Developers in case extra come in futrue patches to games.
                 g.DeveloperId = Convert.ToInt32(ddlDeveloper.SelectedValue);
                 g.AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue);
+                //TODO: should they be entitled to change the game genre? Perhaps if the devloper is not happy with what was assigned orignally to the game after altrerations/patches
+                g.GameGenre = ddlGameGenre.SelectedValue;
+
             }
             else
             { 
@@ -122,7 +128,8 @@ namespace Christoc.Modules.SGGameDistribution
                     GameDescription = txtDescription.Text.Trim(),
                     AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue),
                     DownloadUrl = txtDownloadUrl.Text.Trim(),
-                    ModuleId = ModuleId
+                    ModuleId = ModuleId,
+                    GameGenre = ddlGameGenre.SelectedValue
                 };
             }
 

@@ -10,21 +10,29 @@
             <h3>
                 <asp:Label ID="lblGameName" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameName").ToString() %>'/>
             </h3>
+
             <asp:Label ID="prefixDeveloper" runat="server" Text="Developer:" CssClass="gameDist_PrefixLabel"></asp:Label>
             &nbsp;
             <asp:Label ID="lblDeveloper" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "DeveloperName").ToString() %>' CssClass="gameDist_Developer"></asp:Label>
             <br/>
+
             <asp:Label ID="prefixCreatedOnDate" runat="server" Text="Published Date:" CssClass="gameDist_PrefixLabel"></asp:Label>
             &nbsp;
             <asp:Label ID="lblCreatedOnDate" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "CreatedOnDate").ToString() %>' CssClass="gameDist_CreatedOnDate"></asp:Label>
             <br/>
+
             <asp:Label ID="prefixGameDescription" runat="server" Text="Game Description:" CssClass="gameDist_PrefixLabel"></asp:Label>
             &nbsp;
             <p>
                 <asp:Label ID="lblGameDescription" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameDescription").ToString() %>' CssClass="gameDist_gameDescription"></asp:Label>
             </p>
 
-            <asp:Label ID="prefixAgeRating" runat="server" Text="Age Rating" CssClass="gameDist_PrefixLabel"></asp:Label>
+            <asp:Label ID="prefixGameGenre" runat="server" Text="Game Genre:" CssClass="gameDist_PrefixLabel"></asp:Label>
+            &nbsp;
+            <asp:Label ID="lblGameGenre" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameGenre").ToString() %>'></asp:Label>
+            <br/>
+
+            <asp:Label ID="prefixAgeRating" runat="server" Text="Age Rating:" CssClass="gameDist_PrefixLabel"></asp:Label>
             &nbsp;
             <asp:Label ID="lblAgeRating" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "AgeRating").ToString() %>'></asp:Label>
             <br/>
