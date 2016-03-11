@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="View.ascx.cs" Inherits="Christoc.Modules.SGGameDistribution.View" %>
+<%@ Import Namespace="DotNetNuke.UI.UserControls" %>
 
 <asp:Repeater ID="rptGameList" runat="server" OnItemDataBound="RptGameListOnItemDataBound" OnItemCommand="RptGameListOnItemCommand">
     <HeaderTemplate>
@@ -10,7 +11,8 @@
             <h3>
                 <asp:Label ID="lblGameName" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameName").ToString() %>'/>
             </h3>
-
+            <asp:ImageField DataImageUrlField=""/>
+            <br/>
             <asp:Label ID="prefixDeveloper" runat="server" Text="Developer:" CssClass="gameDist_PrefixLabel"></asp:Label>
             &nbsp;
             <asp:Label ID="lblDeveloper" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "DeveloperName").ToString() %>' CssClass="gameDist_Developer"></asp:Label>
@@ -36,7 +38,6 @@
             &nbsp;
             <asp:Label ID="lblAgeRating" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "AgeRating").ToString() %>'></asp:Label>
             <br/>
-
 
             <asp:linkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server" OnClientClick="btnDownload_OnClick"></asp:linkButton>
 

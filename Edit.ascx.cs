@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
@@ -145,6 +146,22 @@ namespace Christoc.Modules.SGGameDistribution
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
 
+        protected void UploadButton_Click(object sender, EventArgs e)
+        {
+            if (FileUploadControl.HasFile)
+            {
+                try
+                {
+                    string filename = Path.GetFileName(FileUploadControl.FileName);
+                    FileUploadControl.SaveAs(Server.MapPath("~\\SGData\\images\\") + filename);
+                    StatusLabel.Text = "Upload status: File uploaded!";
+                }
+                catch (Exception ex)
+                {
+                    StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                }
+            }
+        }
         protected void buttonCancel_Click(object sender, EventArgs e)
         {
             //Return User to Page they one one prior to Adding Game.

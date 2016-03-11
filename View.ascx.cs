@@ -11,6 +11,7 @@
 */
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Christoc.Modules.SGGameDistribution.Components;

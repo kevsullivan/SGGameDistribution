@@ -6,7 +6,7 @@
 <br/>
 
 <dnn:label ID="lblDescription" runat="server" Text="Description" HelpText="Description of the Game"></dnn:label>
-<asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="100"></asp:TextBox>
+<asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="50"></asp:TextBox>
 <br/>
 
 <dnn:label ID="lblDeveloper" runat="server" Text="Developer" HelpText="Developer who created the game."></dnn:label>
@@ -25,6 +25,21 @@
 <asp:TextBox ID="txtDownloadUrl" runat="server"></asp:TextBox>
 <br/>
 
-<asp:LinkButton ID="buttonSubmit" Text="Submit" runat="server" OnClick="buttonSubmit_Click"></asp:LinkButton>
-&nbsp;
-<asp:LinkButton ID="buttonCancel" Text="Cancel" runat="server" OnClick="buttonCancel_Click"></asp:LinkButton>
+<!-- attempt at upload implementation 
+    TODO: wire up upload/download functionality
+    TODO: ensure dnn file restrictions are active if not impleemnt my own ones on uploads.
+    TODO: Add default image functionality i.e if they don't supply image give it a default one based on genre. Make Genre required.
+    TODO: The actuall install needs be required - enforce this.
+-->
+
+<dnn:label ID="lblImage" runat="server" Text="Image" HelpText="Image to display with the game"></dnn:label>
+<asp:FileUpload id="FileUploadControl" runat="server" text="test"/>
+<asp:Button runat="server" id="UploadButton" text="Upload" onclick="UploadButton_Click" />
+<br /><br />
+<asp:Label runat="server" id="StatusLabel" text="Upload status: " />
+
+<div class="right">
+   <asp:LinkButton ID="buttonSubmit" Text="Submit" runat="server" OnClick="buttonSubmit_Click"></asp:LinkButton>
+    &nbsp;
+    <asp:LinkButton ID="buttonCancel" Text="Cancel" runat="server" OnClick="buttonCancel_Click"></asp:LinkButton> 
+</div>
