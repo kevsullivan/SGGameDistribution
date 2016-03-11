@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="SGGameDistribution" type="Module" version="00.00.03">
+    <package name="SGGameDistribution" type="Module" version="00.00.04">
       <friendlyName>SGGameDistribution</friendlyName>
       <description>SGGameDistribution module</description>
       <iconFile>Images/icon_extensions.gif</iconFile>
@@ -23,8 +23,8 @@
             <basePath>DesktopModules\SGGameDistribution</basePath>
             <script type="Install">
               <path>Providers\DataProviders\SqlDataProvider</path>
-              <name>00.00.02.SqlDataProvider</name>
-              <version>00.00.02</version>
+              <name>00.00.03.SqlDataProvider</name>
+              <version>00.00.03</version>
             </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
