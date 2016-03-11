@@ -29,12 +29,6 @@ BEGIN
 		GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
 		)  ON [PRIMARY]
 		 TEXTIMAGE_ON [PRIMARY]
-END
-ELSE IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'GameGenre' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
-BEGIN
-	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
-END
-GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAINT
 	PK_{objectQualifier}SGGameDistribution_Game PRIMARY KEY CLUSTERED 
@@ -42,6 +36,11 @@ ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAI
 	GameId
 	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
+END
+ELSE IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'GameGenre' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
+END
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDownloads]') AND type in (N'U'))
