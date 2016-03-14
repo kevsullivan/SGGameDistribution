@@ -49,7 +49,10 @@ namespace Christoc.Modules.SGGameDistribution.Components
         {
             DataProvider.Instance().DeleteGame(gameId);
         }
-
+        public static string GetImage(object GameID)
+        {
+            return "~/SGData/images/placeholder.png";
+        }
         /// <summary>
         /// Saves Game details within system.
         /// Used for adding and updating of game.

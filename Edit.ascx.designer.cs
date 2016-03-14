@@ -139,22 +139,22 @@ namespace Christoc.Modules.SGGameDistribution {
         protected global::System.Web.UI.WebControls.FileUpload FileUploadControl;
         
         /// <summary>
-        /// UploadButton control.
+        /// lblInstaller control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button UploadButton;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblInstaller;
         
         /// <summary>
-        /// StatusLabel control.
+        /// InstallUploadControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StatusLabel;
+        protected global::System.Web.UI.WebControls.FileUpload InstallUploadControl;
         
         /// <summary>
         /// buttonSubmit control.

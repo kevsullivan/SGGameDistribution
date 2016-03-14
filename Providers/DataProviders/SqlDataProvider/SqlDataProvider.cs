@@ -177,7 +177,9 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// , @CreatedByUserID
         /// , @AgeRating
         /// , @GameGenre
-        /// , @DownloadUrl nvarchar
+        /// , @DownloadUrl
+        /// , @ImageFileName
+        /// , @InstallerFileName
         /// </summary>
         /// <param name="g"></param>
         /// <returns>An Integer = the ID of game that gets created.</returns>
@@ -193,6 +195,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@AgeRating", g.AgeRating)
                 , new SqlParameter("@GameGenre", g.GameGenre)
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
+                , new SqlParameter("@ImageFileName", g.ImageFileName)
+                , new SqlParameter("@InstallerFileName", g.InstallerFileName)
                 ));
             return gId;
         }
@@ -209,6 +213,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// , @AgeRating
         /// , @GameGenre
         /// , @DownloadUrl
+        /// , @ImageFileName
+        /// , @InstallerFileName
         /// </summary>
         /// <param name="g"></param>
         public override void UpdateGame(Game g)
@@ -224,6 +230,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@AgeRating", g.AgeRating)
                 , new SqlParameter("@GameGenre", g.GameGenre)
                 , new SqlParameter("@DownloadUrl", g.DownloadUrl)
+                , new SqlParameter("@ImageFileName", g.ImageFileName)
+                , new SqlParameter("@InstallerFileName", g.InstallerFileName)
                 );
         }
 

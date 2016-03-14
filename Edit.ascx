@@ -33,10 +33,10 @@
 -->
 
 <dnn:label ID="lblImage" runat="server" Text="Image" HelpText="Image to display with the game"></dnn:label>
-<asp:FileUpload id="FileUploadControl" runat="server" text="test"/>
-<asp:Button runat="server" id="UploadButton" text="Upload" onclick="UploadButton_Click" />
-<br /><br />
-<asp:Label runat="server" id="StatusLabel" text="Upload status: " />
+<asp:FileUpload id="FileUploadControl" runat="server" text="Image File"/>
+<br/>
+<dnn:label ID="lblInstaller" runat="server" Text="Installer" HelpText="Install File for the game"></dnn:label>
+<asp:FileUpload id="InstallUploadControl" runat="server" text="Install File"/>
 
 <div class="right">
    <asp:LinkButton ID="buttonSubmit" Text="Submit" runat="server" OnClick="buttonSubmit_Click"></asp:LinkButton>

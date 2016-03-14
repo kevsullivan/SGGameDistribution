@@ -26,7 +26,9 @@ BEGIN
 		LastModifiedByUserId int NOT NULL,
 		AgeRating int NOT NULL,
 		DownloadUrl nvarchar(MAX) NOT NULL,
-		GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
+		GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized',
+		ImageFileName nvarchar(MAX) NOT NULL DEFAULT 'placeholder.png',
+		InstallerFileName nvarchar(MAX)
 		)  ON [PRIMARY]
 		 TEXTIMAGE_ON [PRIMARY]
 
@@ -37,10 +39,21 @@ ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAI
 	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
 END
-ELSE IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'GameGenre' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'GameGenre' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
 BEGIN
 	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
 END
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'ImageFileName' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD ImageFileName nvarchar(MAX) NOT NULL DEFAULT 'placeholder.png'
+END
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'InstallerFileName' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD InstallerFileName nvarchar(MAX)
+END
+
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDownloads]') AND type in (N'U'))
@@ -86,6 +99,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddGame
 , @AgeRating int
 , @GameGenre nvarchar (max)
 , @DownloadUrl nvarchar (max)
+, @ImageFileName nvarchar (max)
+, @InstallerFileName nvarchar (max)
 
 AS
 INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
@@ -100,7 +115,9 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			,[LastModifiedByUserId]
 			,[AgeRating]
 			,[GameGenre]
-			,[DownloadUrl])
+			,[DownloadUrl]
+			,[ImageFileName]
+			,[InstallerFileName])
 	VALUES
 		(@GameName
 			, @GameDescription
@@ -114,6 +131,8 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, @AgeRating
 			, @GameGenre
 			, @DownloadUrl
+			, @ImageFileName
+			, @InstallerFileName
 		)
 --return the ID of the Game back so we can create a contentItemId
 Select @@Identity
@@ -135,6 +154,8 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame
 , @AgeRating int
 , @GameGenre nvarchar (max)
 , @DownloadUrl nvarchar (max)
+, @ImageFileName nvarchar (max)
+, @InstallerFileName nvarchar (max)
 
 AS
 UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
@@ -149,6 +170,8 @@ UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, AgeRating = @AgeRating
 			, GameGenre = @GameGenre
 			, DownloadUrl = @DownloadUrl
+			, ImageFileName = @ImageFileName
+			, InstallerFileName = @InstallerFileName
 WHERE
 			GameId = @GameId
 GO
@@ -200,6 +223,8 @@ SELECT
 	, g.AgeRating
 	, g.GameGenre
 	, g.DownloadUrl
+	, g.ImageFileName
+	, g.InstallerFileName
 	, CI.ContentItemID
 	, CI.Content
 	, CI.ContentTypeID
@@ -235,6 +260,8 @@ SELECT
 	, g.AgeRating
 	, g.GameGenre
 	, g.DownloadUrl
+	, g.ImageFileName
+	, g.InstallerFileName
 	, CI.ContentItemID
 	, CI.Content
 	, CI.ContentTypeID

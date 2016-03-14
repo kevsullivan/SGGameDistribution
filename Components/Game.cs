@@ -82,6 +82,16 @@ namespace Christoc.Modules.SGGameDistribution.Components
         public string DownloadUrl { get; set; }
 
         /// <summary>
+        /// Name of Game Image.
+        /// </summary>
+        public string ImageFileName { get; set; }
+
+        /// <summary>
+        /// Name of Game Installer.
+        /// </summary>
+        public string InstallerFileName { get; set; }
+
+        /// <summary>
         /// The portal where the game resides.
         /// </summary>
         public int PortalId { get; set; }
@@ -128,6 +138,8 @@ namespace Christoc.Modules.SGGameDistribution.Components
             AgeRating = Null.SetNullInteger(dr["AgeRating"]);
             GameGenre = Null.SetNullString(dr["GameGenre"]);
             DownloadUrl = Null.SetNullString(dr["DownloadUrl"]);
+            ImageFileName = Null.SetNullString(dr["ImageFileName"]);
+            InstallerFileName = Null.SetNullString(dr["InstallerFileName"]);
         }
 
         /// <summary>

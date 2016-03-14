@@ -14,6 +14,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Web.UI;
 using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
@@ -100,7 +101,44 @@ namespace Christoc.Modules.SGGameDistribution
         protected void buttonSubmit_Click(object sender, EventArgs e)
         {
             Game g;
-
+            var imageFilename = "";
+            var installFilename = "";
+            if (InstallUploadControl.HasFile)
+            {
+                try
+                {
+                    installFilename = Path.GetFileName(InstallUploadControl.FileName);
+                    InstallUploadControl.SaveAs(Server.MapPath("~\\SGData\\installers\\") + GameId + installFilename);
+                    //StatusLabel.Text = "Upload status: File uploaded!";
+                }
+                catch (Exception ex)
+                {
+                    //StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                    ClientMessageBox.Show("There was an issue with installer upload: " + ex, this);
+                    return;
+                }
+            }
+            else
+            {
+                ClientMessageBox.Show("You must provide an installation file with all new games.", this);
+                return;
+            }
+            if (FileUploadControl.HasFile)
+            {
+                try
+                {
+                    imageFilename = Path.GetFileName(FileUploadControl.FileName);
+                    FileUploadControl.SaveAs(Server.MapPath("~\\SGData\\images\\") + GameId + imageFilename);
+                    //StatusLabel.Text = "Upload status: File uploaded!";
+                }
+                catch (Exception ex)
+                {
+                    //StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                    ClientMessageBox.Show("There was an issue with installer upload: " + ex, this);
+                    return;
+                }
+            }
+            
             if (GameId > 0)
             {
                 g = GameController.GetGame(GameId);
@@ -114,6 +152,9 @@ namespace Christoc.Modules.SGGameDistribution
                 g.AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue);
                 //TODO: should they be entitled to change the game genre? Perhaps if the devloper is not happy with what was assigned orignally to the game after altrerations/patches
                 g.GameGenre = ddlGameGenre.SelectedValue;
+                // New file added means update filename to filename + gamesId for uniqueness else leave it as it was
+                g.ImageFileName = imageFilename != "" ? GameId + imageFilename : g.ImageFileName;
+                g.InstallerFileName = installFilename != "" ? GameId + installFilename : g.InstallerFileName;
 
             }
             else
@@ -130,7 +171,11 @@ namespace Christoc.Modules.SGGameDistribution
                     AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue),
                     DownloadUrl = txtDownloadUrl.Text.Trim(),
                     ModuleId = ModuleId,
-                    GameGenre = ddlGameGenre.SelectedValue
+                    GameGenre = ddlGameGenre.SelectedValue,
+                    // File submitted for new game means store the file name + gameId for uniqueness otherwise use placeholder image.
+                    ImageFileName = imageFilename != "" ? GameId + imageFilename : "placeholder.png",
+                    InstallerFileName = installFilename
+
                 };
             }
 
@@ -145,9 +190,12 @@ namespace Christoc.Modules.SGGameDistribution
             //TODO: Pass parameters into NavigateUrl to Show message that Game was Saved.
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
-
+        // TODO: leaving for reference but not using anymore the upload is handled along with rest of game data.
         protected void UploadButton_Click(object sender, EventArgs e)
         {
+
+            /*Required html: < asp:Button runat = "server" id = "UploadButton" text = "Upload" onclick = "UploadButton_Click" />
+            //               <asp:Label runat="server" id="StatusLabel" text="Upload status: " />
             if (FileUploadControl.HasFile)
             {
                 try
@@ -160,13 +208,29 @@ namespace Christoc.Modules.SGGameDistribution
                 {
                     StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
                 }
-            }
+            }*/
         }
         protected void buttonCancel_Click(object sender, EventArgs e)
         {
             //Return User to Page they one one prior to Adding Game.
             //To Return to specific page = pass in tabId etc to NavigateUrl()
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
+        }
+
+        public static class ClientMessageBox
+        {
+
+            public static void Show(string message, Control owner)
+            {
+                Page page = (owner as Page) ?? owner.Page;
+                if (page == null) return;
+
+                page.ClientScript.RegisterStartupScript(owner.GetType(),
+                    "ShowMessage", string.Format("<script type='text/javascript'>alert('{0}')</script>",
+                    message));
+
+            }
+
         }
     }
 }
