@@ -13,6 +13,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Christoc.Modules.SGGameDistribution.Components;
@@ -55,6 +56,7 @@ namespace Christoc.Modules.SGGameDistribution
         /* TODO: I want to try get list of games showing like Image and header to left then added info on rightside instead of underneat - just requires some html/css design that I can't waste time on right now */
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Page.IsPostBack) return;
             try
             {
                 // ModuleId Exposed from PortalModuleBase
@@ -82,8 +84,7 @@ namespace Christoc.Modules.SGGameDistribution
                 var linkDelete = e.Item.FindControl("linkDelete") as LinkButton;
                 var linkDownload = e.Item.FindControl("linkDownload") as LinkButton;
                 var panelAdminControls = e.Item.FindControl("panelAdmin") as Panel;
-                var gamePhoto = e.Item.FindControl("gamePhoto") as Image;
-
+                var paypalDonateButton = e.Item.FindControl("PayPalBtn") as ImageButton;
                 var currentGame = (Game) e.Item.DataItem;
                 
                 // Check User Logged in has edit rights and edit control + panel exist.
@@ -97,17 +98,27 @@ namespace Christoc.Modules.SGGameDistribution
                     // Adds JS to button to create popup confirmation dialog that is set in view.ascx.resx file
                     ClientAPI.AddButtonConfirm(linkDelete, Localization.GetString("ConfirmDelete", LocalResourceFile));
                 }
-                if (linkDownload != null)
-                {
-                    linkDownload.CommandArgument = currentGame.GameId.ToString();
-
-                    // Adds JS to button to create popup announcement that game is downloading
-                    ClientAPI.AddButtonConfirm(linkDownload, Localization.GetString("ConfirmDownload", LocalResourceFile));
-                }
                 else
                 {
                     panelAdminControls.Visible = false;
                 }
+                if (paypalDonateButton != null)
+                {
+                    paypalDonateButton.Enabled = true;
+                }
+                if (linkDownload != null)
+                {
+                    linkDownload.CommandArgument = currentGame.GameId.ToString();
+                    var downloadLink = currentGame.InstallerFileName;
+                    if (string.IsNullOrEmpty(downloadLink))
+                    {
+                        //ClientMessageBox.Show("Sorry there is no installer attached to this game", this);
+                        return;
+                    }
+                    // Adds JS to button to create popup announcement that game is downloading
+                    ClientAPI.AddButtonConfirm(linkDownload, Localization.GetString("ConfirmDownload", LocalResourceFile));
+                }
+                
             }
         }
 
@@ -162,7 +173,7 @@ namespace Christoc.Modules.SGGameDistribution
                 }
 
                 DownloadController.SaveDownload(d, TabId);
-                if (g.InstallerFileName != null)
+                if (!(string.IsNullOrEmpty(g.InstallerFileName)))
                 {
                     try
                     {
@@ -177,11 +188,6 @@ namespace Christoc.Modules.SGGameDistribution
 
                         ClientMessageBox.Show("Sorry something went wrong while downloading: " + ex, this);
                     }
-                    
-                }
-                else
-                {
-                    ClientMessageBox.Show("Sorry there is no installer attached to this game", this);
                 }
             }
 
@@ -189,6 +195,7 @@ namespace Christoc.Modules.SGGameDistribution
         }
         protected void btnDownload_OnClick(object sender, EventArgs e)
         {
+            if (Page.IsPostBack) return;
             string filename = "~/Downloads/msizap.exe";
             if (filename != "")
             {
@@ -224,6 +231,24 @@ namespace Christoc.Modules.SGGameDistribution
 
             }
 
+        }
+
+        public void PayPalBtn_Click(object sender, ImageClickEventArgs e)
+        {
+            // TODO: add developers paypal ID and pull it in here depending on game that donatiion is for right now all just go to mine
+            string url = "";
+            string business = "kevsullivan@live.ie";
+            string description = "Donation";
+            string country = "IRL";
+            string currency = "EUR";
+            url += "https://www.paypal.com/cgi-bin/webscr" +
+                    "?cmd=" + "_donations" +
+                    "&business=" + business +
+                    "&lc=" + country +
+                    "&item_name=" + description +
+                    "&currency_code=" + currency +
+                    "&bn=" + "PP%2dDonationsBF";
+            Response.Redirect(url);
         }
 
         public ModuleActionCollection ModuleActions

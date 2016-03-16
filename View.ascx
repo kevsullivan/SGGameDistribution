@@ -16,7 +16,7 @@
                  <asp:Image ID="gamePhoto" Width="150" runat="server" ImageUrl='<%#"~/SGData/images/" + DataBinder.Eval(Container.DataItem, "ImageFileName") %>' />
             </div>
         </div>
-            <br/> <br/> <br/> <br/> <br/>
+            <br/> <br/> <br/> <br/> <br/><br/>
         <div>
             <asp:Label ID="prefixDeveloper" runat="server" Text="Developer:" CssClass="gameDist_PrefixLabel"></asp:Label>
                 &nbsp;
@@ -43,6 +43,7 @@
                 &nbsp;
                 <asp:Label ID="lblAgeRating" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "AgeRating").ToString() %>'></asp:Label>
                 <br/>
+                <asp:ImageButton ID="PayPalBtn" runat="server" ImageUrl="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" OnClick="PayPalBtn_Click"/>
 
                 <asp:linkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server" OnClientClick="btnDownload_OnClick"></asp:linkButton>
 
@@ -53,8 +54,7 @@
                 </asp:Panel>
         </div>
                <br/> 
-                
-        
+
     </ItemTemplate>
     <FooterTemplate>
     </FooterTemplate>
