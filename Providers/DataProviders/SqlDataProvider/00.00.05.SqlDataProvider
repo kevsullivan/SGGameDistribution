@@ -25,10 +25,11 @@ BEGIN
 		LastModifiedOnDate datetime NOT NULL,
 		LastModifiedByUserId int NOT NULL,
 		AgeRating int NOT NULL,
-		DownloadUrl nvarchar(MAX) NOT NULL,
+		MoreInfo nvarchar(MAX) NOT NULL,
 		GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized',
 		ImageFileName nvarchar(MAX) NOT NULL DEFAULT 'placeholder.png',
-		InstallerFileName nvarchar(MAX)
+		InstallerFileName nvarchar(MAX),
+		PayPal nvarchar(MAX) NOT NULL DEFAULT ''
 		)  ON [PRIMARY]
 		 TEXTIMAGE_ON [PRIMARY]
 
@@ -39,6 +40,7 @@ ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD CONSTRAI
 	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
 END
+
 IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'GameGenre' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
 BEGIN
 	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD GameGenre nvarchar(MAX) NOT NULL DEFAULT 'Uncategorized'
@@ -54,12 +56,21 @@ BEGIN
 	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD InstallerFileName nvarchar(MAX)
 END
 
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE Name = 'PayPal' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}SGGameDistribution_Game ADD PayPal nvarchar(MAX) NOT NULL DEFAULT ''
+END
+
+IF EXISTS( SELECT * FROM sys.columns WHERE Name = 'DownloadUrl' AND Object_ID = Object_ID(N'{databaseOwner}{objectQualifier}SGGameDistribution_Game'))
+BEGIN
+	EXEC sp_RENAME '{databaseOwner}{objectQualifier}SGGameDistribution_Game.DownloadUrl', 'MoreInfo', 'COLUMN'
+END
+
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDownloads]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}SGGameDownloads]
-GO
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SGGameDownloads]') AND type in (N'U'))
+BEGIN
 CREATE TABLE {databaseOwner}{objectQualifier}SGGameDownloads
 	(
 	DownloadId int NOT NULL IDENTITY (1, 1),
@@ -74,14 +85,13 @@ CREATE TABLE {databaseOwner}{objectQualifier}SGGameDownloads
 	GameDevId int NOT NULL
 	)  ON [PRIMARY]
 	 TEXTIMAGE_ON [PRIMARY]
-GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}SGGameDownloads ADD CONSTRAINT
 	PK_{objectQualifier}GameDownloads PRIMARY KEY CLUSTERED 
 	(
 	DownloadId
 	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-
+END
 GO
 
 IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_AddGame') and OBJECTPROPERTY(id, N'IsProcedure')=1)
@@ -98,9 +108,10 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddGame
 , @CreatedByUserID int
 , @AgeRating int
 , @GameGenre nvarchar (max)
-, @DownloadUrl nvarchar (max)
+, @MoreInfo nvarchar (max)
 , @ImageFileName nvarchar (max)
 , @InstallerFileName nvarchar (max)
+, @PayPal nvarchar (max)
 
 AS
 INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
@@ -115,9 +126,10 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			,[LastModifiedByUserId]
 			,[AgeRating]
 			,[GameGenre]
-			,[DownloadUrl]
+			,[MoreInfo]
 			,[ImageFileName]
-			,[InstallerFileName])
+			,[InstallerFileName]
+			,[PayPal])
 	VALUES
 		(@GameName
 			, @GameDescription
@@ -130,9 +142,10 @@ INSERT INTO {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, @CreatedByUserID
 			, @AgeRating
 			, @GameGenre
-			, @DownloadUrl
+			, @MoreInfo
 			, @ImageFileName
 			, @InstallerFileName
+			, @PayPal
 		)
 --return the ID of the Game back so we can create a contentItemId
 Select @@Identity
@@ -153,9 +166,10 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateGame
 , @LastModifiedByUserId int
 , @AgeRating int
 , @GameGenre nvarchar (max)
-, @DownloadUrl nvarchar (max)
+, @MoreInfo nvarchar (max)
 , @ImageFileName nvarchar (max)
 , @InstallerFileName nvarchar (max)
+, @PayPal nvarchar (max)
 
 AS
 UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
@@ -169,9 +183,10 @@ UPDATE {databaseOwner}[{objectQualifier}SGGameDistribution_Game]
 			, LastModifiedByUserId = @LastModifiedByUserId
 			, AgeRating = @AgeRating
 			, GameGenre = @GameGenre
-			, DownloadUrl = @DownloadUrl
+			, MoreInfo = @MoreInfo
 			, ImageFileName = @ImageFileName
 			, InstallerFileName = @InstallerFileName
+			, PayPal = @PayPal
 WHERE
 			GameId = @GameId
 GO
@@ -222,9 +237,10 @@ SELECT
 	, g.LastModifiedByUserId
 	, g.AgeRating
 	, g.GameGenre
-	, g.DownloadUrl
+	, g.MoreInfo
 	, g.ImageFileName
 	, g.InstallerFileName
+	, g.PayPal
 	, CI.ContentItemID
 	, CI.Content
 	, CI.ContentTypeID
@@ -259,9 +275,10 @@ SELECT
 	, g.LastModifiedByUserId
 	, g.AgeRating
 	, g.GameGenre
-	, g.DownloadUrl
+	, g.MoreInfo
 	, g.ImageFileName
 	, g.InstallerFileName
+	, g.PayPal
 	, CI.ContentItemID
 	, CI.Content
 	, CI.ContentTypeID

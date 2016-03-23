@@ -216,7 +216,7 @@ namespace Christoc.Modules.SGGameDistribution
                 }
             }
         }
-
+        //TODO: this isn't working correctly in several places need a new method to provide client feedback
         public static class ClientMessageBox
         {
 
@@ -235,9 +235,17 @@ namespace Christoc.Modules.SGGameDistribution
 
         public void PayPalBtn_Click(object sender, ImageClickEventArgs e)
         {
+            var paypal = sender as ImageButton;
+            var value = paypal.Attributes["param"];
+            if (value == "")
+            {
+                ClientMessageBox.Show("Sorry the developer hasn't added a PayPal account", this);
+                return;
+            }
+            
             // TODO: add developers paypal ID and pull it in here depending on game that donatiion is for right now all just go to mine
             string url = "";
-            string business = "kevsullivan@live.ie";
+            string business = value;
             string description = "Donation";
             string country = "IRL";
             string currency = "EUR";

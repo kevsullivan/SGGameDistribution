@@ -177,7 +177,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// , @CreatedByUserID
         /// , @AgeRating
         /// , @GameGenre
-        /// , @DownloadUrl
+        /// , @MoreInfo
         /// , @ImageFileName
         /// , @InstallerFileName
         /// </summary>
@@ -194,9 +194,10 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@CreatedByUserID", g.CreatedByUserIDId)
                 , new SqlParameter("@AgeRating", g.AgeRating)
                 , new SqlParameter("@GameGenre", g.GameGenre)
-                , new SqlParameter("@DownloadUrl", g.DownloadUrl)
+                , new SqlParameter("@MoreInfo", g.MoreInfo)
                 , new SqlParameter("@ImageFileName", g.ImageFileName)
                 , new SqlParameter("@InstallerFileName", g.InstallerFileName)
+                , new SqlParameter("@PayPal", g.PayPal)
                 ));
             return gId;
         }
@@ -212,7 +213,7 @@ namespace Christoc.Modules.SGGameDistribution.Data
         /// , @LastModifiedByUserId
         /// , @AgeRating
         /// , @GameGenre
-        /// , @DownloadUrl
+        /// , @MoreInfo
         /// , @ImageFileName
         /// , @InstallerFileName
         /// </summary>
@@ -229,9 +230,10 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@LastModifiedByUserId", g.LastModifiedByUserId)
                 , new SqlParameter("@AgeRating", g.AgeRating)
                 , new SqlParameter("@GameGenre", g.GameGenre)
-                , new SqlParameter("@DownloadUrl", g.DownloadUrl)
+                , new SqlParameter("@MoreInfo", g.MoreInfo)
                 , new SqlParameter("@ImageFileName", g.ImageFileName)
                 , new SqlParameter("@InstallerFileName", g.InstallerFileName)
+                , new SqlParameter("@PayPal", g.PayPal)
                 );
         }
 

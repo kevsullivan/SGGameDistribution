@@ -77,9 +77,9 @@ namespace Christoc.Modules.SGGameDistribution.Components
         public string GameGenre { get; set; }
 
         /// <summary>
-        /// Link for Game Download.
+        /// Link for more info on game.
         /// </summary>
-        public string DownloadUrl { get; set; }
+        public string MoreInfo { get; set; }
 
         /// <summary>
         /// Name of Game Image.
@@ -90,6 +90,11 @@ namespace Christoc.Modules.SGGameDistribution.Components
         /// Name of Game Installer.
         /// </summary>
         public string InstallerFileName { get; set; }
+
+        /// <summary>
+        /// PayPal Email to send donations to.
+        /// </summary>
+        public string PayPal { get; set; }
 
         /// <summary>
         /// The portal where the game resides.
@@ -137,9 +142,10 @@ namespace Christoc.Modules.SGGameDistribution.Components
             LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
             AgeRating = Null.SetNullInteger(dr["AgeRating"]);
             GameGenre = Null.SetNullString(dr["GameGenre"]);
-            DownloadUrl = Null.SetNullString(dr["DownloadUrl"]);
+            MoreInfo = Null.SetNullString(dr["MoreInfo"]);
             ImageFileName = Null.SetNullString(dr["ImageFileName"]);
             InstallerFileName = Null.SetNullString(dr["InstallerFileName"]);
+            PayPal = Null.SetNullString(dr["PayPal"]);
         }
 
         /// <summary>

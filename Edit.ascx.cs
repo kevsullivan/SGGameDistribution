@@ -76,11 +76,12 @@ namespace Christoc.Modules.SGGameDistribution
                     {
                         txtName.Text = game.GameName;
                         txtDescription.Text = game.GameDescription;
-                        txtDownloadUrl.Text = game.DownloadUrl;
+                        txtMoreInfo.Text = game.MoreInfo;
                         ddlDeveloper.Items.FindByValue(game.DeveloperId.ToString()).Selected = true;
                         //TODO: Auto select previous age in edit view and Game Genre
                         ddlAgeRating.Items.FindByValue(game.AgeRating.ToString()).Selected = true;
                         ddlGameGenre.Items.FindByValue(game.GameGenre).Selected = true;
+                        txtPayPal.Text = game.PayPal;
                     }
                 }
             }
@@ -118,7 +119,8 @@ namespace Christoc.Modules.SGGameDistribution
                     return;
                 }
             }
-            else
+            //Checks gameId as only want to show the error if creating new game rather than editing
+            else if (GameId <=0)
             {
                 ClientMessageBox.Show("You must provide an installation file with all new games.", this);
                 return;
@@ -146,7 +148,7 @@ namespace Christoc.Modules.SGGameDistribution
                 g.GameDescription = txtDescription.Text.Trim();
                 g.LastModifiedByUserId = UserId;
                 g.LastModifiedOnDate = DateTime.Now;
-                g.DownloadUrl = txtDownloadUrl.Text.Trim();
+                g.MoreInfo = txtMoreInfo.Text.Trim();
                 //TODO: Validate reasoning for developerId to be editable. Perhaps better to be able to append Developers in case extra come in futrue patches to games.
                 g.DeveloperId = Convert.ToInt32(ddlDeveloper.SelectedValue);
                 g.AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue);
@@ -154,7 +156,9 @@ namespace Christoc.Modules.SGGameDistribution
                 g.GameGenre = ddlGameGenre.SelectedValue;
                 // New file added means update filename to filename + gamesId for uniqueness else leave it as it was
                 g.ImageFileName = imageFilename != "" ? GameId + imageFilename : g.ImageFileName;
+                // Only override installer if new one passed in TODO: double check comparison to empty string ok (might need null)
                 g.InstallerFileName = installFilename != "" ? GameId + installFilename : g.InstallerFileName;
+                g.PayPal = txtPayPal.Text.Trim();
 
             }
             else
@@ -169,12 +173,13 @@ namespace Christoc.Modules.SGGameDistribution
                     GameName = txtName.Text.Trim(),
                     GameDescription = txtDescription.Text.Trim(),
                     AgeRating = Convert.ToInt32(ddlAgeRating.SelectedValue),
-                    DownloadUrl = txtDownloadUrl.Text.Trim(),
+                    MoreInfo = txtMoreInfo.Text.Trim(),
                     ModuleId = ModuleId,
                     GameGenre = ddlGameGenre.SelectedValue,
                     // File submitted for new game means store the file name + gameId for uniqueness otherwise use placeholder image.
                     ImageFileName = imageFilename != "" ? GameId + imageFilename : "placeholder.png",
-                    InstallerFileName = installFilename
+                    InstallerFileName = installFilename,
+                    PayPal = txtPayPal.Text.Trim()
 
                 };
             }

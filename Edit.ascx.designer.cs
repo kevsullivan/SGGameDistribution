@@ -103,22 +103,22 @@ namespace Christoc.Modules.SGGameDistribution {
         protected global::System.Web.UI.WebControls.DropDownList ddlGameGenre;
         
         /// <summary>
-        /// lblDownloadUrl control.
+        /// lblMoreInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblDownloadUrl;
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblMoreInfo;
         
         /// <summary>
-        /// txtDownloadUrl control.
+        /// txtMoreInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDownloadUrl;
+        protected global::System.Web.UI.WebControls.TextBox txtMoreInfo;
         
         /// <summary>
         /// lblImage control.
@@ -155,6 +155,24 @@ namespace Christoc.Modules.SGGameDistribution {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload InstallUploadControl;
+        
+        /// <summary>
+        /// lblPayPal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl lblPayPal;
+        
+        /// <summary>
+        /// txtPayPal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPayPal;
         
         /// <summary>
         /// buttonSubmit control.

@@ -21,8 +21,8 @@
 <asp:DropDownList ID="ddlGameGenre" runat="server"></asp:DropDownList>
 <br/>
 
-<dnn:label ID="lblDownloadUrl" runat="server" Text="Download" HelpText="Download Link for the game."></dnn:label>
-<asp:TextBox ID="txtDownloadUrl" runat="server"></asp:TextBox>
+<dnn:label ID="lblMoreInfo" runat="server" Text="Download" HelpText="Link for game specific webpage if available."></dnn:label>
+<asp:TextBox ID="txtMoreInfo" runat="server"></asp:TextBox>
 <br/>
 
 <!-- attempt at upload implementation 
@@ -37,7 +37,10 @@
 <br/>
 <dnn:label ID="lblInstaller" runat="server" Text="Installer" HelpText="Install File for the game"></dnn:label>
 <asp:FileUpload id="InstallUploadControl" runat="server" text="Install File"/>
-
+<br />
+<dnn:label ID="lblPayPal" runat="server" Text="PayPal" HelpText="PayPal address of developer"></dnn:label>
+<asp:TextBox ID="txtPayPal" runat="server"></asp:TextBox>
+<br/>
 <div class="right">
    <asp:LinkButton ID="buttonSubmit" Text="Submit" runat="server" OnClick="buttonSubmit_Click"></asp:LinkButton>
     &nbsp;

@@ -1,6 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="View.ascx.cs" Inherits="Christoc.Modules.SGGameDistribution.View" %>
-<%@ Import Namespace="DotNetNuke.UI.UserControls" %>
-<%@ Import Namespace="Christoc.Modules.SGGameDistribution.Components" %>
 
 <asp:Repeater ID="rptGameList" runat="server" OnItemDataBound="RptGameListOnItemDataBound" OnItemCommand="RptGameListOnItemCommand">
     <HeaderTemplate>
@@ -43,7 +41,7 @@
                 &nbsp;
                 <asp:Label ID="lblAgeRating" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "AgeRating").ToString() %>'></asp:Label>
                 <br/>
-                <asp:ImageButton ID="PayPalBtn" runat="server" ImageUrl="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" OnClick="PayPalBtn_Click"/>
+                <asp:ImageButton ID="PayPalBtn" runat="server" ImageUrl="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" param='<%#DataBinder.Eval(Container.DataItem, "PayPal").ToString() %>' OnClick="PayPalBtn_Click"/>
 
                 <asp:linkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server" OnClientClick="btnDownload_OnClick"></asp:linkButton>
 
