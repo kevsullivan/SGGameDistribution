@@ -104,7 +104,15 @@ namespace Christoc.Modules.SGGameDistribution
                 }
                 if (paypalDonateButton != null)
                 {
-                    paypalDonateButton.Enabled = true;
+                    var payPalAddress = currentGame.PayPal;
+                    if (string.IsNullOrEmpty(payPalAddress))
+                    {
+                        paypalDonateButton.Enabled = paypalDonateButton.Visible = false;
+                    }
+                    else
+                    {
+                        paypalDonateButton.Enabled = true;
+                    }
                 }
                 if (linkDownload != null)
                 {
@@ -112,7 +120,7 @@ namespace Christoc.Modules.SGGameDistribution
                     var downloadLink = currentGame.InstallerFileName;
                     if (string.IsNullOrEmpty(downloadLink))
                     {
-                        //ClientMessageBox.Show("Sorry there is no installer attached to this game", this);
+                        linkDownload.Enabled = linkDownload.Visible = false;
                         return;
                     }
                     // Adds JS to button to create popup announcement that game is downloading
@@ -178,8 +186,8 @@ namespace Christoc.Modules.SGGameDistribution
                     try
                     {
                         Response.ContentType = "application/exe";
-                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + g.InstallerFileName);
-                        Response.TransmitFile(Server.MapPath("~/SGData/installers/" + g.GameId + g.InstallerFileName));
+                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + g.GameName + ".exe");
+                        Response.TransmitFile(Server.MapPath("~/SGData/installers/" + g.InstallerFileName));
                         Response.End();
 
                     }
@@ -193,29 +201,7 @@ namespace Christoc.Modules.SGGameDistribution
 
             Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
         }
-        protected void btnDownload_OnClick(object sender, EventArgs e)
-        {
-            if (Page.IsPostBack) return;
-            string filename = "~/Downloads/msizap.exe";
-            if (filename != "")
-            {
-                string path = Server.MapPath(filename);
-                System.IO.FileInfo file = new System.IO.FileInfo(path);
-                if (file.Exists)
-                {
-                    Response.Clear();
-                    Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name);
-                    Response.AddHeader("Content-Length", file.Length.ToString());
-                    Response.ContentType = "application/octet-stream";
-                    Response.WriteFile(file.FullName);
-                    Response.End();
-                }
-                else
-                {
-                    Response.Write("This file does not exist.");
-                }
-            }
-        }
+
         //TODO: this isn't working correctly in several places need a new method to provide client feedback
         public static class ClientMessageBox
         {

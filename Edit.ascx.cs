@@ -109,7 +109,7 @@ namespace Christoc.Modules.SGGameDistribution
                 try
                 {
                     installFilename = Path.GetFileName(InstallUploadControl.FileName);
-                    InstallUploadControl.SaveAs(Server.MapPath("~\\SGData\\installers\\") + GameId + installFilename);
+                    InstallUploadControl.SaveAs(Server.MapPath("~\\SGData\\installers\\") + Convert.ToInt32(ddlDeveloper.SelectedValue) + installFilename);
                     //StatusLabel.Text = "Upload status: File uploaded!";
                 }
                 catch (Exception ex)
@@ -130,13 +130,13 @@ namespace Christoc.Modules.SGGameDistribution
                 try
                 {
                     imageFilename = Path.GetFileName(FileUploadControl.FileName);
-                    FileUploadControl.SaveAs(Server.MapPath("~\\SGData\\images\\") + GameId + imageFilename);
+                    FileUploadControl.SaveAs(Server.MapPath("~\\SGData\\images\\") + Convert.ToInt32(ddlDeveloper.SelectedValue) + imageFilename);
                     //StatusLabel.Text = "Upload status: File uploaded!";
                 }
                 catch (Exception ex)
                 {
                     //StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
-                    ClientMessageBox.Show("There was an issue with installer upload: " + ex, this);
+                    ClientMessageBox.Show("There was an issue with image upload: " + ex, this);
                     return;
                 }
             }
@@ -155,9 +155,10 @@ namespace Christoc.Modules.SGGameDistribution
                 //TODO: should they be entitled to change the game genre? Perhaps if the devloper is not happy with what was assigned orignally to the game after altrerations/patches
                 g.GameGenre = ddlGameGenre.SelectedValue;
                 // New file added means update filename to filename + gamesId for uniqueness else leave it as it was
-                g.ImageFileName = imageFilename != "" ? GameId + imageFilename : g.ImageFileName;
+                g.ImageFileName = imageFilename != "" ? g.DeveloperId + imageFilename : g.ImageFileName;
                 // Only override installer if new one passed in TODO: double check comparison to empty string ok (might need null)
-                g.InstallerFileName = installFilename != "" ? GameId + installFilename : g.InstallerFileName;
+                //TODO: Right now ensuring uniqueness by appending DevID to installer name - so the dev shouldn't duplicate his/her installers personally - there won't be conflicts with other dev either.
+                g.InstallerFileName = installFilename != "" ? g.DeveloperId + installFilename : g.InstallerFileName;
                 g.PayPal = txtPayPal.Text.Trim();
 
             }
@@ -177,8 +178,9 @@ namespace Christoc.Modules.SGGameDistribution
                     ModuleId = ModuleId,
                     GameGenre = ddlGameGenre.SelectedValue,
                     // File submitted for new game means store the file name + gameId for uniqueness otherwise use placeholder image.
-                    ImageFileName = imageFilename != "" ? GameId + imageFilename : "placeholder.png",
-                    InstallerFileName = installFilename,
+                    //TODO: Right now ensuring uniqueness by appending DevID to installer name - so the dev shouldn't duplicate his/her installers personally - there won't be conflicts with other dev either.
+                    ImageFileName = imageFilename != "" ? Convert.ToInt32(ddlDeveloper.SelectedValue) + imageFilename : "placeholder.png",
+                    InstallerFileName = Convert.ToInt32(ddlDeveloper.SelectedValue) + installFilename,
                     PayPal = txtPayPal.Text.Trim()
 
                 };

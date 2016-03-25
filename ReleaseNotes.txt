@@ -8,15 +8,16 @@
 <div class="License">
 	<h3>Serenity Gaming is a FYP project developed By Kevin O'Sullivan. This module will cover the Game Distribution aspect of the project being implemented.</h3>
 	<p class="Owner">
-		<b>Version 01.00.00 Initial Prod Site Version.</b><br /><br />
+		<b>Version 01.01.00</b><br /><br />
 	</p>
 	<p>
-		Version 1 of Serenity Gaming to be released to Production. This has all the default behavior for game distribtuion and includes a donate button for the developer. It still requires a visual design overhaul.
+		Version 1.01.00 Fixes a few issues that shipped in v01.00.00.
 	</p>
 	
 	<h4>Bug Fixes</h4>
 	<ul>
-			<li>No Bugs Listed</li>
+			<li>Installers Downloading Correctly now</li>
+			<li>Only possible to download/donate on games that have required installer/paypal address</li>
 	</ul>
 	
 </div>

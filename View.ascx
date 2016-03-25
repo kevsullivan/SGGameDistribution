@@ -4,7 +4,7 @@
     <HeaderTemplate>
     </HeaderTemplate>
     <ItemTemplate>
-        <div class="left">
+        <div>
             <div>
                 <h3>
                 <asp:Label ID="lblGameName" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameName").ToString() %>'/>
@@ -14,7 +14,6 @@
                  <asp:Image ID="gamePhoto" Width="150" runat="server" ImageUrl='<%#"~/SGData/images/" + DataBinder.Eval(Container.DataItem, "ImageFileName") %>' />
             </div>
         </div>
-            <br/> <br/> <br/> <br/> <br/><br/>
         <div>
             <asp:Label ID="prefixDeveloper" runat="server" Text="Developer:" CssClass="gameDist_PrefixLabel"></asp:Label>
                 &nbsp;
@@ -43,7 +42,7 @@
                 <br/>
                 <asp:ImageButton ID="PayPalBtn" runat="server" ImageUrl="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" param='<%#DataBinder.Eval(Container.DataItem, "PayPal").ToString() %>' OnClick="PayPalBtn_Click"/>
 
-                <asp:linkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server" OnClientClick="btnDownload_OnClick"></asp:linkButton>
+                <asp:linkButton ID="linkDownload" CommandName="Download" ResourceKey="DownloadGame.Text" runat="server"></asp:linkButton>
 
                 <asp:Panel ID="panelAdmin" Visible="False" runat="server">
                     <asp:LinkButton ID="linkEdit" CommandName="Edit" ResourceKey="EditGame.Text" Visible="False" Enabled="False" runat="server"></asp:LinkButton>
