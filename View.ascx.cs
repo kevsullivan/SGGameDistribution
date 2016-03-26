@@ -128,7 +128,8 @@ namespace Christoc.Modules.SGGameDistribution
                     {
                         Directory.CreateDirectory(Server.MapPath("~\\SGData\\images\\" + currentGame.DeveloperId + "\\"));
                         image.ImageUrl = "~/SGData/images/" + currentGame.DeveloperId + "/" + currentGame.ImageFileName;
-                        if (!File.Exists(image.ImageUrl))
+                        
+                        if (!File.Exists(Server.MapPath("~\\SGData\\images\\" + currentGame.DeveloperId + "\\") + currentGame.ImageFileName))
                         {
                             image.ImageUrl = "images/placeholder.png";
                         }
