@@ -85,6 +85,7 @@ namespace Christoc.Modules.SGGameDistribution
                 var linkDownload = e.Item.FindControl("linkDownload") as LinkButton;
                 var panelAdminControls = e.Item.FindControl("panelAdmin") as Panel;
                 var paypalDonateButton = e.Item.FindControl("PayPalBtn") as ImageButton;
+                var image = e.Item.FindControl("gamePhoto") as Image;
                 var currentGame = (Game) e.Item.DataItem;
                 
                 // Check User Logged in has edit rights and edit control + panel exist.
@@ -114,6 +115,26 @@ namespace Christoc.Modules.SGGameDistribution
                         paypalDonateButton.Enabled = true;
                     }
                 }
+                
+                if (image != null)
+                {
+                    //TODO: might have to pass default file here somehow
+                    
+                    if (currentGame.ImageFileName == "placeholder.png")
+                    {
+                        image.ImageUrl = "images/placeholder.png";
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(Server.MapPath("~\\SGData\\images\\" + currentGame.DeveloperId + "\\"));
+                        image.ImageUrl = "~/SGData/images/" + currentGame.DeveloperId + "/" + currentGame.ImageFileName;
+                        if (!File.Exists(image.ImageUrl))
+                        {
+                            image.ImageUrl = "images/placeholder.png";
+                        }
+                    }
+                    
+                }
                 if (linkDownload != null)
                 {
                     linkDownload.CommandArgument = currentGame.GameId.ToString();
@@ -121,12 +142,13 @@ namespace Christoc.Modules.SGGameDistribution
                     if (string.IsNullOrEmpty(downloadLink))
                     {
                         linkDownload.Enabled = linkDownload.Visible = false;
+                        //TODO this return means nothing else handled after download
                         return;
                     }
                     // Adds JS to button to create popup announcement that game is downloading
                     ClientAPI.AddButtonConfirm(linkDownload, Localization.GetString("ConfirmDownload", LocalResourceFile));
                 }
-                
+
             }
         }
 
@@ -186,8 +208,8 @@ namespace Christoc.Modules.SGGameDistribution
                     try
                     {
                         Response.ContentType = "application/exe";
-                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + g.GameName + ".exe");
-                        Response.TransmitFile(Server.MapPath("~/SGData/installers/" + g.InstallerFileName));
+                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + g.InstallerFileName);
+                        Response.TransmitFile(Server.MapPath("~/SGData/installers/" + g.DeveloperId + "/" + g.InstallerFileName));
                         Response.End();
 
                     }

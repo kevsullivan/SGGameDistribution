@@ -108,8 +108,12 @@ namespace Christoc.Modules.SGGameDistribution
             {
                 try
                 {
+                    //Create Directory only creates if the folder doesn't already exist - it also recursivley creates all directories/subdirectories if they don't exist
+                    //So I check for specific directory for the developer if not there create it and we will store their installers in this folder
+                    //This way the dev handles their unique installer names and we can let them specify the installer name rather than handling it ourselves.
+                    Directory.CreateDirectory(Server.MapPath("~\\SGData\\installers\\" + ddlDeveloper.SelectedValue + "\\"));
                     installFilename = Path.GetFileName(InstallUploadControl.FileName);
-                    InstallUploadControl.SaveAs(Server.MapPath("~\\SGData\\installers\\") + Convert.ToInt32(ddlDeveloper.SelectedValue) + installFilename);
+                    InstallUploadControl.SaveAs(Server.MapPath("~\\SGData\\installers\\" + ddlDeveloper.SelectedValue + "\\") + installFilename);
                     //StatusLabel.Text = "Upload status: File uploaded!";
                 }
                 catch (Exception ex)
@@ -129,8 +133,10 @@ namespace Christoc.Modules.SGGameDistribution
             {
                 try
                 {
+                    //TODO: add folder handling like with installers
+                    Directory.CreateDirectory(Server.MapPath("~\\SGData\\images\\" + ddlDeveloper.SelectedValue + "\\"));
                     imageFilename = Path.GetFileName(FileUploadControl.FileName);
-                    FileUploadControl.SaveAs(Server.MapPath("~\\SGData\\images\\") + Convert.ToInt32(ddlDeveloper.SelectedValue) + imageFilename);
+                    FileUploadControl.SaveAs(Server.MapPath("~\\SGData\\images\\" + ddlDeveloper.SelectedValue + "\\") + imageFilename);
                     //StatusLabel.Text = "Upload status: File uploaded!";
                 }
                 catch (Exception ex)
@@ -155,10 +161,10 @@ namespace Christoc.Modules.SGGameDistribution
                 //TODO: should they be entitled to change the game genre? Perhaps if the devloper is not happy with what was assigned orignally to the game after altrerations/patches
                 g.GameGenre = ddlGameGenre.SelectedValue;
                 // New file added means update filename to filename + gamesId for uniqueness else leave it as it was
-                g.ImageFileName = imageFilename != "" ? g.DeveloperId + imageFilename : g.ImageFileName;
+                g.ImageFileName = imageFilename != "" ? imageFilename : g.ImageFileName;
                 // Only override installer if new one passed in TODO: double check comparison to empty string ok (might need null)
                 //TODO: Right now ensuring uniqueness by appending DevID to installer name - so the dev shouldn't duplicate his/her installers personally - there won't be conflicts with other dev either.
-                g.InstallerFileName = installFilename != "" ? g.DeveloperId + installFilename : g.InstallerFileName;
+                g.InstallerFileName = installFilename != "" ? installFilename : g.InstallerFileName;
                 g.PayPal = txtPayPal.Text.Trim();
 
             }
@@ -179,8 +185,8 @@ namespace Christoc.Modules.SGGameDistribution
                     GameGenre = ddlGameGenre.SelectedValue,
                     // File submitted for new game means store the file name + gameId for uniqueness otherwise use placeholder image.
                     //TODO: Right now ensuring uniqueness by appending DevID to installer name - so the dev shouldn't duplicate his/her installers personally - there won't be conflicts with other dev either.
-                    ImageFileName = imageFilename != "" ? Convert.ToInt32(ddlDeveloper.SelectedValue) + imageFilename : "placeholder.png",
-                    InstallerFileName = Convert.ToInt32(ddlDeveloper.SelectedValue) + installFilename,
+                    ImageFileName = imageFilename != "" ? imageFilename : "placeholder.png",
+                    InstallerFileName = installFilename,
                     PayPal = txtPayPal.Text.Trim()
 
                 };

@@ -11,7 +11,7 @@
                 </h3>
             </div>
             <div id="imageContainer" height="100px" width="150px">
-                 <asp:Image ID="gamePhoto" Width="150" runat="server" ImageUrl='<%#"~/SGData/images/" + DataBinder.Eval(Container.DataItem, "ImageFileName") %>' />
+                 <asp:Image ID="gamePhoto" Width="150" runat="server"/>
             </div>
         </div>
         <div>
