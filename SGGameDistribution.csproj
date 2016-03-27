@@ -112,6 +112,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bootstrap.css" />
     <Content Include="Edit.ascx" />
     <Content Include="images\placeholder.png" />
     <Content Include="License.txt" />

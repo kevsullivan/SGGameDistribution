@@ -311,7 +311,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_AddDownload
 , @IsLegalDownload bit
 
 AS
-INSERT INTO {databaseOwner}[{objectQualifier}SGGameDownloads]
+INSERT INTO {databaseOwner}{objectQualifier}SGGameDownloads
 			([GameId]
 			,[GameName]
 			,[DownloaderId]
@@ -345,7 +345,7 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_UpdateDownlo
 , @IsLegalDownload bit
 
 AS
-UPDATE {databaseOwner}[{objectQualifier}SGGameDownloads]
+UPDATE {databaseOwner}{objectQualifier}SGGameDownloads
 			Set
 			IsLegalDownload = @IsLegalDownload
 			, LatestDownload = GETDATE()
@@ -367,9 +367,25 @@ AS
 SELECT 
 	DownloaderId
 FROM
-	{databaseOwner}[{objectQualifier}SGGameDownloads]
+	{databaseOwner}{objectQualifier}SGGameDownloads
 WHERE
 	GameId = @GameId AND DownloaderId = @DownloaderId
+GO
+
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_GetDevs') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_GetDevs
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_GetDevs
+AS
+SELECT DISTINCT(u.Username) AS QueryResult 
+FROM
+	{databaseOwner}{objectQualifier}SGGameDistribution_Game g 
+INNER JOIN 
+	{databaseOwner}{objectQualifier}Users u 
+ON 
+	g.DeveloperId = u.UserID
 GO
 
 /************************************************************/

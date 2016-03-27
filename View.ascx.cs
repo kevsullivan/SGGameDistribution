@@ -11,6 +11,7 @@
 */
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
+using System.Web.UI.HtmlControls;
+using DotNetNuke.Entities.Users;
 
 namespace Christoc.Modules.SGGameDistribution
 {
@@ -50,9 +53,11 @@ namespace Christoc.Modules.SGGameDistribution
 
         private void InitializeComponent()
         {
-            this.Load += new System.EventHandler(this.Page_Load);
+            //this.Load += new System.EventHandler(this.Page_Load);
+            this.Page.PreLoad += Page_PreLoad;
         }
         */
+        
         /* TODO: I want to try get list of games showing like Image and header to left then added info on rightside instead of underneat - just requires some html/css design that I can't waste time on right now */
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -60,8 +65,25 @@ namespace Christoc.Modules.SGGameDistribution
             try
             {
                 // ModuleId Exposed from PortalModuleBase
+
+                refineOptions.DataSource = new ArrayList { "All", "FPS", "Action", "Adventure", "Indie", "Massive Multiplayer", "Racing", "RPG", "Sim", "Sports", "Strategy" };
+                refineOptions.DataBind();
+
+                var devs = GameController.GetDevs();
+                devs.Insert(0, "All");
+                developers.DataSource = devs;
+                developers.DataBind();
+                
                 rptGameList.DataSource = GameController.GetGames(ModuleId);
                 rptGameList.DataBind();
+                if (Session["Genre"] != null)
+                {
+                   refineOptions.SelectedValue = Session["Genre"] as string; 
+                }
+                if (Session["Dev"] != null)
+                {
+                    developers.SelectedValue = Session["Dev"] as string;
+                }
                 //gamePhotoTest.ImageUrl = Server.MapPath("~\\SGData\\images\\BB.jpg");
             }
             catch (Exception exc) //Module failed to load
@@ -78,8 +100,10 @@ namespace Christoc.Modules.SGGameDistribution
         /// <param name="e"></param>
         protected void RptGameListOnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            //This gets called for each item.
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
+                
                 var linkEdit = e.Item.FindControl("linkEdit") as LinkButton;
                 var linkDelete = e.Item.FindControl("linkDelete") as LinkButton;
                 var linkDownload = e.Item.FindControl("linkDownload") as LinkButton;
@@ -87,7 +111,52 @@ namespace Christoc.Modules.SGGameDistribution
                 var paypalDonateButton = e.Item.FindControl("PayPalBtn") as ImageButton;
                 var image = e.Item.FindControl("gamePhoto") as Image;
                 var currentGame = (Game) e.Item.DataItem;
-                
+
+                if (Session["Genre"] == null || Session["Genre"] as string == "All")
+                {
+                    //Show all TODO: For now that means don't have to do anything don't really need this if.
+                }
+                else
+                {
+                    //Show only FPS Games - TODO: should be able just return from this and it won't do work on item?
+                    if (currentGame.GameGenre != Session["Genre"] as string)
+                    {
+                        var titleDiv = e.Item.FindControl("titleDiv") as HtmlGenericControl;
+                        var contentDiv = e.Item.FindControl("contentDiv") as HtmlGenericControl;
+                        var itemDiv = e.Item.FindControl("item") as HtmlGenericControl;
+                        if (itemDiv != null)
+                        {
+                            itemDiv.Visible = false;
+                        }
+                        if (titleDiv != null)
+                        {
+                            titleDiv.Visible = false;
+                        }
+                        if (contentDiv != null)
+                        {
+                            contentDiv.Visible = false;
+                        }
+                        return;
+                    }
+                }
+                if (Session["Dev"] == null || Session["Dev"] as string == "All") ;
+                else
+                {
+                    if (currentGame.DeveloperName != Session["Dev"] as string)
+                    {
+                        var titleDiv = e.Item.FindControl("titleDiv") as HtmlGenericControl;
+                        var contentDiv = e.Item.FindControl("contentDiv") as HtmlGenericControl;
+                        if (titleDiv != null)
+                        {
+                            titleDiv.Visible = false;
+                        }
+                        if (contentDiv != null)
+                        {
+                            contentDiv.Visible = false;
+                        }
+                        return;
+                    }
+                }
                 // Check User Logged in has edit rights and edit control + panel exist.
                 // TODO: Might be better to seperate contruction of Delete/Edit Visbilities e.g User Can edit games but not delete.
                 if (IsEditable && linkDelete != null && linkEdit != null && panelAdminControls != null)
@@ -268,6 +337,12 @@ namespace Christoc.Modules.SGGameDistribution
             Response.Redirect(url);
         }
 
+        public void RefineRepeater(object sender, EventArgs e)
+        {
+            Session["Genre"] = refineOptions.SelectedValue;
+            Session["Dev"] = developers.SelectedValue;
+            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
+        }
         public ModuleActionCollection ModuleActions
         {
             get

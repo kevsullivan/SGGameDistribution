@@ -11,8 +11,11 @@
 */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
@@ -155,6 +158,14 @@ namespace Christoc.Modules.SGGameDistribution.Data
         public override IDataReader GetGame(int gameId)
         {
             return SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetGame", new SqlParameter("@GameId", gameId));
+        }
+
+        public override ArrayList GetDevs()
+        {
+            List<string> resList =
+                (from IDataRecord r in SqlHelper.ExecuteReader(ConnectionString, NamePrefix + "GetDevs")
+                    select (string) r["QueryResult"]).ToList();
+            return new ArrayList(resList);
         }
 
         public override void DeleteGame(int gameId)

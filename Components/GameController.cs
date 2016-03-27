@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,6 +31,11 @@ namespace Christoc.Modules.SGGameDistribution.Components
         public static List<Game> GetGames(int moduleId)
         {
             return CBO.FillCollection<Game>(DataProvider.Instance().GetGames(moduleId));
+        }
+
+        public static ArrayList GetDevs()
+        {
+            return (DataProvider.Instance().GetDevs());
         }
 
         /// <summary>

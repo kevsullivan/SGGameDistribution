@@ -51,6 +51,10 @@ GO
 IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_CheckForDownload') and OBJECTPROPERTY(id, N'IsProcedure')=1)
 	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_CheckForDownload
 GO
+
+IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}SGGameDistribution_GetDevs') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}SGGameDistribution_GetDevs
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

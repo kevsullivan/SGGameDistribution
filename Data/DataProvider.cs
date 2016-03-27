@@ -12,6 +12,7 @@
 
 using System.Data;
 using System;
+using System.Collections;
 using Christoc.Modules.SGGameDistribution.Components;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
@@ -84,6 +85,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
         public abstract IDataReader GetGames(int moduleId);
 
         public abstract IDataReader GetGame(int gameId);
+
+        public abstract ArrayList GetDevs();
 
         public abstract void DeleteGame(int gameId);
 

@@ -13,6 +13,24 @@ namespace Christoc.Modules.SGGameDistribution {
     public partial class View {
         
         /// <summary>
+        /// refineOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList refineOptions;
+        
+        /// <summary>
+        /// developers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList developers;
+        
+        /// <summary>
         /// rptGameList control.
         /// </summary>
         /// <remarks>

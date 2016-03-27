@@ -1,10 +1,20 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="View.ascx.cs" Inherits="Christoc.Modules.SGGameDistribution.View" %>
-
+<link type="text/css" rel="stylesheet" href="/bootstrap.css"/>
+<div class="row" id="refineGenre">
+    <asp:Label runat="server" Text="By Genre: "></asp:Label>
+    <asp:DropDownList id="refineOptions" AutoPostBack="True" OnSelectedIndexChanged="RefineRepeater" runat="server"></asp:DropDownList>
+</div>
+<div class="row" id="refineDev">
+    <asp:Label runat="server" Text="By Developer: "></asp:Label>
+    <asp:DropDownList id="developers" AutoPostBack="True" OnSelectedIndexChanged="RefineRepeater" runat="server"></asp:DropDownList>
+</div>
+<div>
 <asp:Repeater ID="rptGameList" runat="server" OnItemDataBound="RptGameListOnItemDataBound" OnItemCommand="RptGameListOnItemCommand">
     <HeaderTemplate>
     </HeaderTemplate>
     <ItemTemplate>
-        <div>
+        <div class="row" id="item">
+        <div class="col-md-3" id="titleDiv" runat="server">
             <div>
                 <h3>
                 <asp:Label ID="lblGameName" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "GameName").ToString() %>'/>
@@ -14,7 +24,8 @@
                  <asp:Image ID="gamePhoto" Width="150" runat="server"/>
             </div>
         </div>
-        <div>
+            <br/><br/>
+        <div class="col-md-8" id="contentDiv" runat="server">
             <asp:Label ID="prefixDeveloper" runat="server" Text="Developer:" CssClass="gameDist_PrefixLabel"></asp:Label>
                 &nbsp;
                 <asp:Label ID="lblDeveloper" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "DeveloperName").ToString() %>' CssClass="gameDist_Developer"></asp:Label>
@@ -49,11 +60,11 @@
                     &nbsp;
                     <asp:LinkButton ID="linkDelete" CommandName="Delete" ResourceKey="DeleteGame.Text" Visible="False" Enabled="False" runat="server"></asp:LinkButton>
                 </asp:Panel>
-        </div>
-               <br/> 
+        </div></div>
 
     </ItemTemplate>
     <FooterTemplate>
     </FooterTemplate>
 </asp:Repeater>
+</div>
 
