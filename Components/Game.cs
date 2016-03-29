@@ -11,6 +11,33 @@ namespace Christoc.Modules.SGGameDistribution.Components
 {
     public class Game:ContentItem
     {
+        public Game() { }
+        public Game(Game aGame)
+        {
+            //Clone content item data - NOTE: dnn base uses the same method as below for cloning (i.e. doesn't implement ICLonable)
+            base.Clone(this, aGame);
+            //TODO: I was going use IClonable for this cloning requirement but other devs recon its poor choice for few reasons including need for deep copy on objects within the game object (e.g DataTime)
+            GameId = aGame.GameId;
+            GameName = aGame.GameName;
+            GameDescription = aGame.GameDescription;
+            DeveloperId = aGame.DeveloperId;
+            DeveloperName = aGame.DeveloperName;
+            ModuleId = aGame.ModuleId;
+            CreatedOnDate = aGame.CreatedOnDate;
+            CreatedByUserIDId = aGame.CreatedByUserIDId;
+            LastModifiedOnDate = aGame.LastModifiedOnDate;
+            LastModifiedByUserId = aGame.LastModifiedByUserId;
+            AgeRating = aGame.AgeRating;
+            GameGenre = aGame.GameGenre;
+            MoreInfo = aGame.MoreInfo;
+            ImageFileName = aGame.ImageFileName;
+            InstallerFileName = aGame.InstallerFileName;
+            PayPal = aGame.PayPal;
+            PortalId = aGame.PortalId;
+            DownloadCount = aGame.DownloadCount;
+            KeyID = aGame.KeyID;
+
+        }
         /// <summary>
         /// GameId Primary Key for Selected Game
         /// </summary>
@@ -102,6 +129,11 @@ namespace Christoc.Modules.SGGameDistribution.Components
         public int PortalId { get; set; }
 
         /// <summary>
+        /// Number of times the game was uniquely downloaded (1 count per user).
+        /// </summary>
+        public int DownloadCount { get; set; }
+
+        /// <summary>
         /// Name of system administrator who ok'd the publishing of game to Serenity Gaming service.
         /// </summary>
         public string CreatedByUserIDUserName => CreatedByUserIDId != 0 ? DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, CreatedByUserIDId).Username : Null.NullString;
@@ -146,7 +178,9 @@ namespace Christoc.Modules.SGGameDistribution.Components
             ImageFileName = Null.SetNullString(dr["ImageFileName"]);
             InstallerFileName = Null.SetNullString(dr["InstallerFileName"]);
             PayPal = Null.SetNullString(dr["PayPal"]);
+            DownloadCount = Null.SetNullInteger(dr["Downloads"]);
         }
+        
 
         /// <summary>
         /// Get/Set Key ID

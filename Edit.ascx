@@ -21,7 +21,7 @@
 <asp:DropDownList ID="ddlGameGenre" runat="server"></asp:DropDownList>
 <br/>
 
-<dnn:label ID="lblMoreInfo" runat="server" Text="Download" HelpText="Link for game specific webpage if available."></dnn:label>
+<dnn:label ID="lblMoreInfo" runat="server" Text="Video Url" HelpText="Url for youtube video."></dnn:label>
 <asp:TextBox ID="txtMoreInfo" runat="server"></asp:TextBox>
 <br/>
 

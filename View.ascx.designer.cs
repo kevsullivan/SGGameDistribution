@@ -13,6 +13,15 @@ namespace Christoc.Modules.SGGameDistribution {
     public partial class View {
         
         /// <summary>
+        /// orderByList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList orderByList;
+        
+        /// <summary>
         /// refineOptions control.
         /// </summary>
         /// <remarks>
@@ -31,6 +40,33 @@ namespace Christoc.Modules.SGGameDistribution {
         protected global::System.Web.UI.WebControls.DropDownList developers;
         
         /// <summary>
+        /// lblCurrentPageT control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurrentPageT;
+        
+        /// <summary>
+        /// cmdPrevT control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button cmdPrevT;
+        
+        /// <summary>
+        /// cmdNextT control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button cmdNextT;
+        
+        /// <summary>
         /// rptGameList control.
         /// </summary>
         /// <remarks>
@@ -38,5 +74,32 @@ namespace Christoc.Modules.SGGameDistribution {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptGameList;
+        
+        /// <summary>
+        /// lblCurrentPageB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurrentPageB;
+        
+        /// <summary>
+        /// cmdPrevB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button cmdPrevB;
+        
+        /// <summary>
+        /// cmdNextB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button cmdNextB;
     }
 }

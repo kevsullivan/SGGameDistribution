@@ -12,8 +12,10 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -57,14 +59,35 @@ namespace Christoc.Modules.SGGameDistribution
             this.Page.PreLoad += Page_PreLoad;
         }
         */
-        
+
+        private List<Game> games
+        {
+            get
+            {
+                if (this.Session["games"] == null)
+                    return GameController.GetGames(ModuleId);
+
+                return (List<Game>)this.Session["games"];
+            }
+            set { this.Session["games"] = value; }
+        }
         /* TODO: I want to try get list of games showing like Image and header to left then added info on rightside instead of underneat - just requires some html/css design that I can't waste time on right now */
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Page.IsPostBack) return;
+            // ModuleId Exposed from PortalModuleBase
+            Session["games"] = games = GameController.GetGames(ModuleId);
+            LoadData();
+            
+        }
+
+        public void LoadData()
+        {
             try
             {
-                // ModuleId Exposed from PortalModuleBase
+                
+                orderByList.DataSource = new ArrayList { "Newest First", "Oldest First", "Popularity" };
+                orderByList.DataBind();
 
                 refineOptions.DataSource = new ArrayList { "All", "FPS", "Action", "Adventure", "Indie", "Massive Multiplayer", "Racing", "RPG", "Sim", "Sports", "Strategy" };
                 refineOptions.DataBind();
@@ -73,18 +96,56 @@ namespace Christoc.Modules.SGGameDistribution
                 devs.Insert(0, "All");
                 developers.DataSource = devs;
                 developers.DataBind();
+
+
+                //Use of temp games means only call into db on page load but can still mess with and refine data in this method without reloading page. (Usefull for search refines and/or paging)
+                //TODO: make sure no issue of shallow vs deep copy here
+                var sortedGames = games.ConvertAll(game => new Game(game));
                 
-                rptGameList.DataSource = GameController.GetGames(ModuleId);
-                rptGameList.DataBind();
-                if (Session["Genre"] != null)
+                //Only enter these if refining in action otherwise we bind full list of games.
+                if (Session["Genre"] != null && Session["Genre"] as string != "All")
                 {
-                   refineOptions.SelectedValue = Session["Genre"] as string; 
+                    refineOptions.SelectedValue = Session["Genre"] as string;
+                    sortedGames.RemoveAll(elem => elem.GameGenre != Session["Genre"] as string);
                 }
-                if (Session["Dev"] != null)
+                if (Session["Dev"] != null && Session["Dev"] as string != "All")
                 {
                     developers.SelectedValue = Session["Dev"] as string;
+                    sortedGames.RemoveAll(elem => elem.DeveloperName != Session["Dev"] as string);
                 }
-                //gamePhotoTest.ImageUrl = Server.MapPath("~\\SGData\\images\\BB.jpg");
+                if (Session["Order"] != null)
+                {
+                    orderByList.SelectedValue = Session["Order"] as string;
+                }
+                
+                switch (orderByList.SelectedValue)
+                {
+                    case "Newest First":
+                        sortedGames = sortedGames.OrderByDescending(o => o.CreatedOnDate).ToList();
+                        break;
+                    case "Olderst First":
+                        sortedGames = sortedGames.OrderBy(o => o.CreatedOnDate).ToList();
+                        break;
+                    case "Popularity":
+                        sortedGames = sortedGames.OrderByDescending(o => o.DownloadCount).ToList();
+                        break;
+                }
+                PagedDataSource page = new PagedDataSource();
+                page.DataSource = sortedGames;
+                page.AllowPaging = true;
+                page.PageSize = 5;
+                page.CurrentPageIndex = CurrentPage;
+
+                lblCurrentPageT.Text = lblCurrentPageB.Text = "Page: " + (CurrentPage + 1).ToString() + " of "
+                + page.PageCount.ToString();
+
+                // Disable Prev or Next buttons if necessary
+                cmdPrevT.Enabled = cmdPrevB.Enabled = !page.IsFirstPage;
+                cmdNextT.Enabled = cmdNextB.Enabled = !page.IsLastPage;
+
+                rptGameList.DataSource = page;
+                rptGameList.DataBind();
+
             }
             catch (Exception exc) //Module failed to load
             {
@@ -92,6 +153,25 @@ namespace Christoc.Modules.SGGameDistribution
             }
         }
 
+        public int CurrentPage
+        {
+            get
+            {
+                // look for current page in ViewState
+                // TODO: may swap to viewstate and move pageload handling into Method rather than Page_Load so don't need to refresh page
+                object o = this.Session["_CurrentPage"];
+                if (o == null)
+                    return 0; // default page index of 0
+                else
+                    return (int) o;
+            }
+
+            set
+            {
+                this.Session["_CurrentPage"] = value;
+            }
+        }
+        
         /// <summary>
         /// When list of games bound and each time game is added to list this gets called
         /// Runs through list and sets proper command arguments (for allowing edits).
@@ -111,51 +191,30 @@ namespace Christoc.Modules.SGGameDistribution
                 var paypalDonateButton = e.Item.FindControl("PayPalBtn") as ImageButton;
                 var image = e.Item.FindControl("gamePhoto") as Image;
                 var currentGame = (Game) e.Item.DataItem;
+                var video = e.Item.FindControl("video") as HtmlControl;
+                var itemBreaker = e.Item.FindControl("spacer") as HtmlControl;
 
-                if (Session["Genre"] == null || Session["Genre"] as string == "All")
+                if (video != null)
                 {
-                    //Show all TODO: For now that means don't have to do anything don't really need this if.
+                    try
+                    {
+                        var request = (HttpWebRequest)HttpWebRequest.Create(currentGame.MoreInfo);
+                        request.Method = "HEAD";
+                        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                        {
+                            video.Attributes["src"] = response.ResponseUri.ToString().Contains("youtube.com") ? currentGame.MoreInfo.Replace("watch?v=", "embed/") : "https://www.youtube.com/embed/RSMrtl2VbFE";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //TODO: create my own coming soon vid
+                        video.Attributes["src"] = "https://www.youtube.com/embed/RSMrtl2VbFE";
+                    }
+                    
                 }
                 else
                 {
-                    //Show only FPS Games - TODO: should be able just return from this and it won't do work on item?
-                    if (currentGame.GameGenre != Session["Genre"] as string)
-                    {
-                        var titleDiv = e.Item.FindControl("titleDiv") as HtmlGenericControl;
-                        var contentDiv = e.Item.FindControl("contentDiv") as HtmlGenericControl;
-                        var itemDiv = e.Item.FindControl("item") as HtmlGenericControl;
-                        if (itemDiv != null)
-                        {
-                            itemDiv.Visible = false;
-                        }
-                        if (titleDiv != null)
-                        {
-                            titleDiv.Visible = false;
-                        }
-                        if (contentDiv != null)
-                        {
-                            contentDiv.Visible = false;
-                        }
-                        return;
-                    }
-                }
-                if (Session["Dev"] == null || Session["Dev"] as string == "All") ;
-                else
-                {
-                    if (currentGame.DeveloperName != Session["Dev"] as string)
-                    {
-                        var titleDiv = e.Item.FindControl("titleDiv") as HtmlGenericControl;
-                        var contentDiv = e.Item.FindControl("contentDiv") as HtmlGenericControl;
-                        if (titleDiv != null)
-                        {
-                            titleDiv.Visible = false;
-                        }
-                        if (contentDiv != null)
-                        {
-                            contentDiv.Visible = false;
-                        }
-                        return;
-                    }
+                    video.Attributes["src"] = "https://www.youtube.com/embed/RSMrtl2VbFE";
                 }
                 // Check User Logged in has edit rights and edit control + panel exist.
                 // TODO: Might be better to seperate contruction of Delete/Edit Visbilities e.g User Can edit games but not delete.
@@ -341,7 +400,8 @@ namespace Christoc.Modules.SGGameDistribution
         {
             Session["Genre"] = refineOptions.SelectedValue;
             Session["Dev"] = developers.SelectedValue;
-            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL());
+            Session["Order"] = orderByList.SelectedValue;
+            LoadData();
         }
         public ModuleActionCollection ModuleActions
         {
@@ -356,6 +416,42 @@ namespace Christoc.Modules.SGGameDistribution
                     };
                 return actions;
             }
+        }
+
+        protected void cmdNextT_Click1(object sender, EventArgs e)
+        {
+            // Set viewstate variable to the next page
+            CurrentPage += 1;
+
+            // Reload control
+            LoadData();
+        }
+
+        protected void cmdPrevT_Click1(object sender, EventArgs e)
+        {
+            // Set viewstate variable to the previous page
+            CurrentPage -= 1;
+
+            // Reload control
+            LoadData();
+        }
+
+        protected void cmdNextB_Click1(object sender, EventArgs e)
+        {
+            // Set viewstate variable to the next page
+            CurrentPage += 1;
+
+            // Reload control
+            LoadData();
+        }
+
+        protected void cmdPrevB_Click1(object sender, EventArgs e)
+        {
+            // Set viewstate variable to the previous page
+            CurrentPage -= 1;
+
+            // Reload control
+            LoadData();
         }
     }
 }
