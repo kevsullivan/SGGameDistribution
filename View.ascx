@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="View.ascx.cs" Inherits="Christoc.Modules.SGGameDistribution.View" %>
-<link type="text/css" rel="stylesheet" href="/bootstrap.css"/>
+<link type="text/css" rel="stylesheet" href="DesktopModules/SGGameDistribution/bootstrap.css"/>
 <div class="row" id="options">
 <div class="col-md-4" id="orderBy">
     <asp:Label runat="server" Text="Order By: "></asp:Label>
