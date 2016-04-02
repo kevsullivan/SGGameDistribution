@@ -35,5 +35,10 @@ namespace Christoc.Modules.SGGameDistribution.Components
         {
             return CBO.FillObject<Download>(DataProvider.Instance().CheckForDownload(UserId, GameId));
         }
+
+        public static void DeleteDownload(int UserId, int GameId)
+        {
+            DataProvider.Instance().DeleteDownload(UserId, GameId);
+        }
     }
 }

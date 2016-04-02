@@ -302,6 +302,11 @@ namespace Christoc.Modules.SGGameDistribution.Data
                 , new SqlParameter("@DownloaderId", downloaderId)
                 );
         }
+
+        public override void DeleteDownload(int gameId, int downloaderId)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, NamePrefix + "DeleteDownload", new SqlParameter("@GameId", gameId), new SqlParameter("@DownloaderId", downloaderId));
+        }
         #endregion
 
     }

@@ -90,6 +90,8 @@ namespace Christoc.Modules.SGGameDistribution.Data
 
         public abstract void DeleteGame(int gameId);
 
+        public abstract void DeleteDownload(int gameId, int downloaderId);
+
         public abstract void DeleteGames(int moduleId);
 
         public abstract int AddGame(Game g);

@@ -47,7 +47,9 @@ namespace Christoc.Modules.SGGameDistribution.Components
 
         public override void Fill(IDataReader dr)
         {
+            //TODO: come back to this why was DownloadID being set up till now instead of DownloaderId
             DownloadId = Null.SetNullInteger(dr["DownloaderId"]);
+            DownloaderId = Null.SetNullInteger(dr["DownloaderId"]);
         }
 
     }

@@ -148,17 +148,12 @@ namespace Christoc.Modules.SGGameDistribution.Components
         #region IHydratable Implementation
 
         /// <summary>
-        /// Due to use of ContentItem - Require Implementation of IHydratable for Game
         /// IHydratable requires implementing Fill and KeyID.
         /// Automates process of mapping up datareader to game object.
         /// </summary>
         /// <param name="dr"></param>
         public override void Fill(IDataReader dr)
         {
-            //TODO: solve out of bounds issue here when calling save game.
-            //TODO: Currently out of bounds issue resolved by altering naming conventions e.g. VerifiedBy -> CreatedByUserId
-            //TODO: Find source of naming conflicts so I can use personal naming conventions - Might be Fill Method (IHydratable) or Some stored Values in Templates for ContentItems Data Table Values.
-            //NOTE: the issue could be out of date stored procedures.
             base.FillInternal(dr);
             // Map objects in Data reader to Game properties.
             GameId = Null.SetNullInteger(dr["GameId"]);
