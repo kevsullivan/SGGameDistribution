@@ -108,6 +108,7 @@ namespace Christoc.Modules.SGGameDistribution
             {
                 try
                 {
+
                     //Create Directory only creates if the folder doesn't already exist - it also recursivley creates all directories/subdirectories if they don't exist
                     //So I check for specific directory for the developer if not there create it and we will store their installers in this folder
                     //This way the dev handles their unique installer names and we can let them specify the installer name rather than handling it ourselves.
@@ -133,6 +134,7 @@ namespace Christoc.Modules.SGGameDistribution
             {
                 try
                 {
+
                     //TODO: add folder handling like with installers
                     Directory.CreateDirectory(Server.MapPath("~\\SGData\\images\\" + ddlDeveloper.SelectedValue + "\\"));
                     imageFilename = Path.GetFileName(FileUploadControl.FileName);

@@ -8,15 +8,15 @@
 <div class="License">
 	<h3>Serenity Gaming is a FYP project developed By Kevin O'Sullivan. This module will cover the Game Distribution aspect of the project being implemented.</h3>
 	<p class="Owner">
-		<b>Version 02.00.01</b><br /><br />
+		<b>Version 02.01.00</b><br /><br />
 	</p>
 	<p>
-		Version 2.00.01 Fixing issue with bootsrap reference
+		Version 02.01.00 Ready for Submission includes changes for unit tests
 	</p>
 	
 	<h4>Bug Fixes</h4>
 	<ul>
-			<li>Bootstrap reference update to that shipped with module</li>
+			<li></li>
 	</ul>
 	
 </div>
