@@ -161,7 +161,6 @@ namespace Christoc.Modules.SGGameDistribution.Components
             GameName = Null.SetNullString(dr["GameName"]);
             GameDescription = Null.SetNullString(dr["GameDescription"]);
             DeveloperId = Null.SetNullInteger(dr["DeveloperId"]);
-            //TODO out of bounds on Username fix datareader
             DeveloperName = Null.SetNullString(dr["Username"]);
             CreatedOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
             CreatedByUserIDId = Null.SetNullInteger(dr["CreatedByUserID"]);
