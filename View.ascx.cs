@@ -381,7 +381,6 @@ namespace Christoc.Modules.SGGameDistribution
                 return;
             }
             
-            // TODO: add developers paypal ID and pull it in here depending on game that donatiion is for right now all just go to mine
             string url = "";
             string business = value;
             string description = "Donation";
